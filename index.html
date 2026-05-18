@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Oracle iExpense Approval Assistant - Determine your expense report approval chain">
+    <meta name="keywords" content="Oracle, iExpense, Approval, AME, Expense Report">
+    <meta name="author" content="Oracle EBS Team">
+    <title>Oracle iExpense Approval Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h1 class="logo-text">Oracle iExpense Approval Assistant</h1>
+                </div>
+                <p class="header-subtitle">Determine your expense approval chain before submission</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Instructions Card -->
+            <section class="card instructions-card" id="instructions">
+                <div class="card-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2>How to Use This Tool</h2>
+                </div>
+                <div class="card-body">
+                    <ol class="instructions-list">
+                        <li>Select your <strong>Operating Unit</strong> (CCP, CCH, or CCF)</li>
+                        <li>Choose your <strong>Expense Template</strong> from the dropdown</li>
+                        <li>Enter the <strong>Total Amount</strong> of your expense</li>
+                        <li>Provide additional information if prompted (grant fund status, submitter name)</li>
+                        <li>Click <strong>"Get Approval Chain"</strong> to see who will approve your expense</li>
+                    </ol>
+                    <p class="instructions-note">
+                        <strong>Note:</strong> This tool provides approval information only. It does not submit expenses or perform calculations.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Expense Details Form -->
+            <section class="card form-card">
+                <div class="card-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 3M12 12H15M12 16H15M9 12H9.01M9 16H9.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2>Expense Details</h2>
+                </div>
+                <div class="card-body">
+                    <form id="expenseForm" class="expense-form" novalidate>
+                        <!-- Operating Unit -->
+                        <div class="form-group">
+                            <label for="operatingUnit" class="form-label required">
+                                Operating Unit
+                                <span class="tooltip" data-tooltip="Select your organizational unit: CCP (101), CCH (102), or CCF (121)">
+                                    <svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <select id="operatingUnit" name="operatingUnit" class="form-control" required aria-required="true">
+                                <option value="">-- Select Operating Unit --</option>
+                                <option value="CCP">CCP (OU 101)</option>
+                                <option value="CCH">CCH (OU 102)</option>
+                                <option value="CCF">CCF (OU 121)</option>
+                            </select>
+                            <span class="error-message" id="error-operatingUnit"></span>
+                        </div>
+
+                        <!-- Expense Template -->
+                        <div class="form-group">
+                            <label for="template" class="form-label required">
+                                Expense Template
+                                <span class="tooltip" data-tooltip="Select the type of expense you are submitting">
+                                    <svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <select id="template" name="template" class="form-control" required aria-required="true" disabled>
+                                <option value="">-- Select Operating Unit First --</option>
+                            </select>
+                            <span class="error-message" id="error-template"></span>
+                        </div>
+
+                        <!-- Total Amount -->
+                        <div class="form-group">
+                            <label for="amount" class="form-label required">
+                                Total Amount
+                                <span class="tooltip" data-tooltip="Enter the total expense amount in dollars">
+                                    <svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="amount" name="amount" class="form-control" 
+                                       placeholder="0.00" min="0" step="0.01" required aria-required="true">
+                            </div>
+                            <span class="error-message" id="error-amount"></span>
+                        </div>
+
+                        <!-- Grant Fund (CCH Only) -->
+                        <div class="form-group" id="grantFundGroup" style="display: none;">
+                            <label class="form-label required">
+                                Grant Fund Status
+                                <span class="tooltip" data-tooltip="Is this expense charged to a grant fund? (Fund codes: 42000 or 41235)">
+                                    <svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="isGrantFund" value="true" class="radio-input">
+                                    <span class="radio-text">Yes - Grant Funded (42000 or 41235)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="isGrantFund" value="false" class="radio-input">
+                                    <span class="radio-text">No - Non-Grant Funded</span>
+                                </label>
+                            </div>
+                            <span class="error-message" id="error-grantFund"></span>
+                        </div>
+
+                        <!-- Submitter Name (Conditional) -->
+                        <div class="form-group" id="submitterGroup" style="display: none;">
+                            <label for="submitterName" class="form-label">
+                                Submitter Name (Optional)
+                                <span class="tooltip" data-tooltip="Enter your name if you are a special submitter (Karen Martino, Melissa, or Damon Howell)">
+                                    <svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <input type="text" id="submitterName" name="submitterName" class="form-control" 
+                                   placeholder="Enter your name">
+                            <span class="help-text">Only required for special submitters with different approval routing</span>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Get Approval Chain
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="resetBtn">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 4V9H4.58152M19.9381 11C19.446 7.05369 16.0796 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9M4.58152 9H9M20 20V15H19.4185M19.4185 15C18.2317 17.9318 15.3574 20 12 20C7.92038 20 4.55399 16.9463 4.06189 13M19.4185 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="card results-card" id="resultsCard" style="display: none;">
+                <div class="card-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 3M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2>Approval Chain</h2>
+                </div>
+                <div class="card-body" id="resultsContent">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="card error-card" id="errorCard" style="display: none;">
+                <div class="card-header error-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2>Error</h2>
+                </div>
+                <div class="card-body" id="errorContent">
+                    <!-- Error message will be dynamically inserted here -->
+                </div>
+            </section>
+
+            <!-- Info Section -->
+            <section class="card info-card" id="infoCard" style="display: none;">
+                <div class="card-header info-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2>Information</h2>
+                </div>
+                <div class="card-body" id="infoContent">
+                    <!-- Info message will be dynamically inserted here -->
+                </div>
+            </section>
+
+            <!-- Help Section -->
+            <section class="card help-card">
+                <div class="card-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.228 9C8.614 7.224 10.15 6 12 6C14.21 6 16 7.79 16 10C16 11.867 14.757 13.43 13.061 13.877C12.461 14.038 12 14.566 12 15.184V16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM12 18H12.01V18.01H12V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2>Need Help?</h2>
+                </div>
+                <div class="card-body">
+                    <div class="help-section">
+                        <h3>Common Questions</h3>
+                        <div class="faq-item">
+                            <strong>Q: What if I don't know my Operating Unit?</strong>
+                            <p>Contact your department administrator or check your expense report submission history in Oracle iExpense.</p>
+                        </div>
+                        <div class="faq-item">
+                            <strong>Q: Can this tool submit my expense report?</strong>
+                            <p>No, this tool only provides approval chain information. You must submit your expense through Oracle iExpense.</p>
+                        </div>
+                        <div class="faq-item">
+                            <strong>Q: What are grant funds (CCH)?</strong>
+                            <p>Grant funds are research or project-specific funding with codes 42000 or 41235. Check with your department if unsure.</p>
+                        </div>
+                        <div class="faq-item">
+                            <strong>Q: Where can I find mileage or per diem rates?</strong>
+                            <p>
+                                <strong>Mileage Rates:</strong> <a href="https://www.travel.dod.mil/Travel-Transportation-Rates/Mileage-Rates/" target="_blank" rel="noopener noreferrer">DOD Mileage Rates</a><br>
+                                <strong>Per Diem Rates:</strong> <a href="https://www.gsa.gov/travel/plan-book/per-diem-rates" target="_blank" rel="noopener noreferrer">GSA Per Diem Rates</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="help-section">
+                        <h3>Contact Support</h3>
+                        <p>For issues not covered by this tool, please contact:</p>
+                        <ul>
+                            <li><strong>Expense Administrator:</strong> For policy questions and approval issues</li>
+                            <li><strong>IT Support:</strong> For system access and technical problems</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">
+                    &copy; 2026 Oracle iExpense Approval Assistant v1.0
+                </p>
+                <p class="footer-disclaimer">
+                    For informational purposes only. This tool does not submit expenses or perform calculations.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="loading-text">Evaluating approval rules...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="rules_engine.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

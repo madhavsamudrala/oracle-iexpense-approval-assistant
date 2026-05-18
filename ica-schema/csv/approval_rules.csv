@@ -1,0 +1,16 @@
+rule_id,rule_name,operating_unit,priority,template,amount_condition,grant_fund,submitter_condition,approver_1,approver_2,approver_3
+CCP-1,Tuition Expenses Routing,CCP,1,CCP Tuition Expenses,,,"NOT IN: Karen Martino, Melissa",CCP and CCH Non Nursing Tuition Approvers,Level 2 Approvers,
+CCP-2,Non-Travel DBMS Required,CCP,2,"CCP Non-Travel Expenses, CCP Travel-Other Expenses",> 0,,,CCP Department Approver,CCP DBMS Approvers,
+CCP-3,Mileage High Amount,CCP,3,CCP Local Mileage Expense,>= 1000,,,CCP Department Approver,CCP DBMS Approvers,
+CCP-4,Mileage Low Amount,CCP,4,CCP Local Mileage Expense,< 1000,,,CCP Department Approver,,
+CCP-5,No Dept Approver Fallback,CCP,5,,,,no_dept_approver,SYSADMIN,,
+CCH-1,Travel Low Amount Grant,CCH,1,"CCH Travel Expenses, CCH Non-Travel Expenses",<= 5000,true,,First Superior,CCH Grant Fund Approvers Level 1,
+CCH-2,Travel Low Amount Non-Grant,CCH,2,"CCH Travel Expenses, CCH Non-Travel Expenses",<= 5000,false,,First Superior,CCH Non Grant Fund Approvers Level 1,
+CCH-3,Travel High Amount Grant,CCH,3,"CCH Travel Expenses, CCH Non-Travel Expenses",> 5000,true,,First Superior,CCH Approvers Greater Than 5k dollars,CCH Grant Fund Approvers Level 1
+CCH-4,Travel High Amount Non-Grant,CCH,4,"CCH Travel Expenses, CCH Non-Travel Expenses",> 5000,false,,First Superior,CCH Approvers Greater Than 5k dollars,CCH Non Grant Fund Approvers Level 1
+CCH-5,Non-Nursing Tuition,CCH,5,CCH Non-Nursing Tuition Expenses,,,"NOT IN: Karen Martino, Melissa",CCP and CCH Non Nursing Tuition Approvers,Level 2 Approvers,
+CCH-6,Nursing Tuition Self Approval,CCH,6,CCH Nursing Tuition Expenses,,,,CCH Nursing Tuition Self Approval group,,
+CCF-1,Low Amount Standard,CCF,1,,< 2000,,"NOT: Damon Howell",CCF Department Approver,,
+CCF-2,High Amount Standard,CCF,2,,>= 2000,,"NOT: Damon Howell",CCF Department Approver,Damon Howell,
+CCF-3,Damon Submitter Skip,CCF,3,,,,"IS: Damon Howell",CCF Department Approver,,
+CCF-4,No Dept Approver Fallback,CCF,4,,,,no_dept_approver,SYSADMIN,,

@@ -1,0 +1,10 @@
+template_id,template_name,operating_unit,category,requires_grant_info
+CCP_MILEAGE,CCP Local Mileage Expense,CCP,Mileage,false
+CCP_NON_TRAVEL,CCP Non-Travel Expenses,CCP,Non-Travel,false
+CCP_TRAVEL_OTHER,CCP Travel-Other Expenses,CCP,Travel,false
+CCP_TUITION,CCP Tuition Expenses,CCP,Tuition,false
+CCH_TRAVEL,CCH Travel Expenses,CCH,Travel,true
+CCH_NON_TRAVEL,CCH Non-Travel Expenses,CCH,Non-Travel,true
+CCH_TUITION_NON_NURSING,CCH Non-Nursing Tuition Expenses,CCH,Tuition,false
+CCH_TUITION_NURSING,CCH Nursing Tuition Expenses,CCH,Tuition,false
+CCF_STANDARD,CCF Standard Expense,CCF,Standard,false

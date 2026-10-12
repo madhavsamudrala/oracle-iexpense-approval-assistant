@@ -29,7 +29,7 @@
 Your iExpense Approval Assistant is a **client-side web application** that:
 - ✅ Implements Oracle AME business rules
 - ✅ Provides instant approval chain determination
-- ✅ Supports 3 Operating Units (CCP, CCH, CCF)
+- ✅ Supports 3 Operating Units (OU1, OU2, OU3)
 - ✅ Has professional UI with responsive design
 - ✅ Deployed via GitHub Pages
 
@@ -123,9 +123,9 @@ We'll use a **hybrid architecture**:
 │   Rules Engine API    │◄─────│   ICA Context Studio         │
 │   (JavaScript)        │      │                              │
 │                       │      │  ┌────────────────────────┐  │
-│  • CCP Rules          │      │  │  Context Manager       │  │
-│  • CCH Rules          │      │  └────────────────────────┘  │
-│  • CCF Rules          │      │                              │
+│  • OU1 Rules          │      │  │  Context Manager       │  │
+│  • OU2 Rules          │      │  └────────────────────────┘  │
+│  • OU3 Rules          │      │                              │
 │  • Validation         │      │  ┌────────────────────────┐  │
 └───────────────────────┘      │  │  watsonx.ai LLM        │  │
                                │  └────────────────────────┘  │
@@ -178,28 +178,28 @@ contexts:
   - name: operating_units
     type: reference_data
     data:
-      - id: CCP
+      - id: OU1
         name: "Primary Operating Unit"
         ou_id: 101
-      - id: CCH
+      - id: OU2
         name: "Healthcare Unit"
         ou_id: 102
-      - id: CCF
+      - id: OU3
         name: "Foundation Unit"
         ou_id: 121
 
   - name: approval_thresholds
     type: business_rules
     rules:
-      CCP:
+      OU1:
         mileage_threshold: 1000
         dbms_required: true
-      CCH:
+      OU2:
         amount_threshold: 5000
         grant_differentiation: true
-      CCF:
+      OU3:
         amount_threshold: 2000
-        special_approver: "Damon Howell"
+        special_approver: "Special Approver"
 
 intents:
   - name: get_approval_chain
@@ -226,14 +226,14 @@ intents:
 entities:
   - name: operating_unit
     type: categorical
-    values: [CCP, CCH, CCF]
+    values: [OU1, OU2, OU3]
     
   - name: expense_template
     type: text
     examples:
-      - "CCP Local Mileage Expense"
-      - "CCH Travel Expenses"
-      - "CCF Standard Expense"
+      - "OU1 Local Mileage Expense"
+      - "OU2 Travel Expenses"
+      - "OU3 Standard Expense"
       
   - name: amount
     type: number
@@ -301,9 +301,9 @@ app.get('/api/templates/:ou', (req, res) => {
 app.get('/api/operating-units', (req, res) => {
   res.json({
     operatingUnits: [
-      { id: 'CCP', name: 'Primary Operating Unit', ou_id: 101 },
-      { id: 'CCH', name: 'Healthcare Unit', ou_id: 102 },
-      { id: 'CCF', name: 'Foundation Unit', ou_id: 121 }
+      { id: 'OU1', name: 'Primary Operating Unit', ou_id: 101 },
+      { id: 'OU2', name: 'Healthcare Unit', ou_id: 102 },
+      { id: 'OU3', name: 'Foundation Unit', ou_id: 121 }
     ]
   });
 });
@@ -333,9 +333,9 @@ flows:
         type: question
         content: "Which Operating Unit are you submitting for?"
         options:
-          - "CCP (Primary)"
-          - "CCH (Healthcare)"
-          - "CCF (Foundation)"
+          - "OU1 (Primary)"
+          - "OU2 (Healthcare)"
+          - "OU3 (Foundation)"
         entity: operating_unit
         
       - id: ask_template
@@ -355,7 +355,7 @@ flows:
         
       - id: ask_grant_fund
         type: conditional_question
-        condition: "operating_unit == 'CCH' && (template.includes('Travel') || template.includes('Non-Travel'))"
+        condition: "operating_unit == 'OU2' && (template.includes('Travel') || template.includes('Non-Travel'))"
         content: "Is this expense funded by a grant (fund codes 42000 or 41235)?"
         options:
           - "Yes"
@@ -364,8 +364,8 @@ flows:
         
       - id: ask_submitter
         type: conditional_question
-        condition: "template.includes('Tuition') || operating_unit == 'CCF'"
-        content: "Are you Karen Martino, Melissa, or Damon Howell?"
+        condition: "template.includes('Tuition') || operating_unit == 'OU3'"
+        content: "Are you Special Approver1, Special Approver2, or Special Approver?"
         optional: true
         entity: submitter_name
         
@@ -486,7 +486,7 @@ class ExpenseApprovalMCPServer extends MCPServer {
       inputSchema: {
         type: 'object',
         properties: {
-          operating_unit: { type: 'string', enum: ['CCP', 'CCH', 'CCF'] },
+          operating_unit: { type: 'string', enum: ['OU1', 'OU2', 'OU3'] },
           template: { type: 'string' },
           amount: { type: 'number' },
           is_grant_fund: { type: 'boolean' },
@@ -506,7 +506,7 @@ class ExpenseApprovalMCPServer extends MCPServer {
       inputSchema: {
         type: 'object',
         properties: {
-          operating_unit: { type: 'string', enum: ['CCP', 'CCH', 'CCF'] }
+          operating_unit: { type: 'string', enum: ['OU1', 'OU2', 'OU3'] }
         },
         required: ['operating_unit']
       },
@@ -522,7 +522,7 @@ class ExpenseApprovalMCPServer extends MCPServer {
       inputSchema: {
         type: 'object',
         properties: {
-          operating_unit: { type: 'string', enum: ['CCP', 'CCH', 'CCF'] }
+          operating_unit: { type: 'string', enum: ['OU1', 'OU2', 'OU3'] }
         },
         required: ['operating_unit']
       },
@@ -603,35 +603,35 @@ class ExpenseApprovalMCPServer extends MCPServer {
   
   getAllRules() {
     return {
-      CCP: [
-        { rule: 'CCP-1', description: 'Tuition expenses routing' },
-        { rule: 'CCP-2', description: 'Non-Travel/Travel-Other with DBMS' },
-        { rule: 'CCP-3', description: 'Mileage >= $1,000 with DBMS' },
-        { rule: 'CCP-4', description: 'Mileage < $1,000 dept only' },
-        { rule: 'CCP-5', description: 'SYSADMIN fallback' }
+      OU1: [
+        { rule: 'OU1-1', description: 'Tuition expenses routing' },
+        { rule: 'OU1-2', description: 'Non-Travel/Travel-Other with DBMS' },
+        { rule: 'OU1-3', description: 'Mileage >= $1,000 with DBMS' },
+        { rule: 'OU1-4', description: 'Mileage < $1,000 dept only' },
+        { rule: 'OU1-5', description: 'SYSADMIN fallback' }
       ],
-      CCH: [
-        { rule: 'CCH-1', description: 'Travel/Non-Travel <= $5k grant' },
-        { rule: 'CCH-2', description: 'Travel/Non-Travel <= $5k non-grant' },
-        { rule: 'CCH-3', description: 'Travel/Non-Travel > $5k grant' },
-        { rule: 'CCH-4', description: 'Travel/Non-Travel > $5k non-grant' },
-        { rule: 'CCH-5', description: 'Non-Nursing tuition' },
-        { rule: 'CCH-6', description: 'Nursing tuition self-approval' }
+      OU2: [
+        { rule: 'OU2-1', description: 'Travel/Non-Travel <= $5k grant' },
+        { rule: 'OU2-2', description: 'Travel/Non-Travel <= $5k non-grant' },
+        { rule: 'OU2-3', description: 'Travel/Non-Travel > $5k grant' },
+        { rule: 'OU2-4', description: 'Travel/Non-Travel > $5k non-grant' },
+        { rule: 'OU2-5', description: 'Non-Nursing tuition' },
+        { rule: 'OU2-6', description: 'Nursing tuition self-approval' }
       ],
-      CCF: [
-        { rule: 'CCF-1', description: 'Amount < $2k dept only' },
-        { rule: 'CCF-2', description: 'Amount >= $2k with Damon' },
-        { rule: 'CCF-3', description: 'Damon submitter skip' },
-        { rule: 'CCF-4', description: 'SYSADMIN fallback' }
+      OU3: [
+        { rule: 'OU3-1', description: 'Amount < $2k dept only' },
+        { rule: 'OU3-2', description: 'Amount >= $2k with Damon' },
+        { rule: 'OU3-3', description: 'Damon submitter skip' },
+        { rule: 'OU3-4', description: 'SYSADMIN fallback' }
       ]
     };
   }
   
   getOperatingUnits() {
     return [
-      { id: 'CCP', name: 'Primary Operating Unit', ou_id: 101 },
-      { id: 'CCH', name: 'Healthcare Unit', ou_id: 102 },
-      { id: 'CCF', name: 'Foundation Unit', ou_id: 121 }
+      { id: 'OU1', name: 'Primary Operating Unit', ou_id: 101 },
+      { id: 'OU2', name: 'Healthcare Unit', ou_id: 102 },
+      { id: 'OU3', name: 'Foundation Unit', ou_id: 121 }
     ];
   }
   
@@ -680,9 +680,9 @@ module.exports = ExpenseApprovalMCPServer;
             <p>Hi! I'm your iExpense Approval Assistant. I can help you determine who will approve your expense report.</p>
             <p>Try asking me things like:</p>
             <ul>
-              <li>"Who approves my CCP mileage expense of $800?"</li>
-              <li>"I need to submit a CCH travel expense for $6,000 on a grant"</li>
-              <li>"What are the approval rules for CCF?"</li>
+              <li>"Who approves my OU1 mileage expense of $800?"</li>
+              <li>"I need to submit a OU2 travel expense for $6,000 on a grant"</li>
+              <li>"What are the approval rules for OU3?"</li>
             </ul>
           </div>
         </div>
@@ -705,9 +705,9 @@ module.exports = ExpenseApprovalMCPServer;
           </button>
         </form>
         <div class="quick-actions">
-          <button class="quick-action" data-query="Show me CCP templates">CCP Templates</button>
-          <button class="quick-action" data-query="Explain CCH rules">CCH Rules</button>
-          <button class="quick-action" data-query="What's the threshold for CCF?">CCF Threshold</button>
+          <button class="quick-action" data-query="Show me OU1 templates">OU1 Templates</button>
+          <button class="quick-action" data-query="Explain OU2 rules">OU2 Rules</button>
+          <button class="quick-action" data-query="What's the threshold for OU3?">OU3 Threshold</button>
         </div>
       </div>
     </main>
@@ -823,7 +823,7 @@ class ChatInterface {
     } else {
       return {
         message: "I can help you with expense approvals. Please provide:\n" +
-                "- Operating Unit (CCP, CCH, or CCF)\n" +
+                "- Operating Unit (OU1, OU2, or OU3)\n" +
                 "- Expense type\n" +
                 "- Amount"
       };
@@ -946,9 +946,9 @@ class LocalNLPProcessor {
     const entities = {};
     
     // Extract OU
-    if (message.match(/\bCCP\b/i)) entities.operating_unit = 'CCP';
-    if (message.match(/\bCCH\b/i)) entities.operating_unit = 'CCH';
-    if (message.match(/\bCCF\b/i)) entities.operating_unit = 'CCF';
+    if (message.match(/\bOU1\b/i)) entities.operating_unit = 'OU1';
+    if (message.match(/\bOU2\b/i)) entities.operating_unit = 'OU2';
+    if (message.match(/\bOU3\b/i)) entities.operating_unit = 'OU3';
     
     // Extract amount
     const amountMatch = message.match(/\$?([\d,]+(?:\.\d{2})?)/);
@@ -996,7 +996,7 @@ const chatInterface = new ChatInterface();
     }
   },
   "context": {
-    "system_prompt": "You are an expert Oracle iExpense approval assistant. You help employees understand who will approve their expense reports based on Operating Unit, expense type, and amount. You have access to comprehensive approval rules for CCP, CCH, and CCF operating units. Always be helpful, accurate, and professional.",
+    "system_prompt": "You are an expert Oracle iExpense approval assistant. You help employees understand who will approve their expense reports based on Operating Unit, expense type, and amount. You have access to comprehensive approval rules for OU1, OU2, and OU3 operating units. Always be helpful, accurate, and professional.",
     "knowledge_base": [
       {
         "type": "rules_engine",
@@ -1038,10 +1038,10 @@ const chatInterface = new ChatInterface();
 
 **Example 1: Simple Query**
 ```
-User: Who approves my CCP mileage expense of $800?
+User: Who approves my OU1 mileage expense of $800?
 
-Bot: For a CCP Local Mileage expense of $800:
-     1. CCP Department Approver
+Bot: For a OU1 Local Mileage expense of $800:
+     1. OU1 Department Approver
      
      Since your amount is less than $1,000, only your department 
      approver is needed. You can submit this through Oracle iExpense!
@@ -1052,13 +1052,13 @@ Bot: For a CCP Local Mileage expense of $800:
 User: I need to submit a travel expense
 
 Bot: I can help with that! Which Operating Unit are you in?
-     - CCP (Primary)
-     - CCH (Healthcare)
-     - CCF (Foundation)
+     - OU1 (Primary)
+     - OU2 (Healthcare)
+     - OU3 (Foundation)
 
-User: CCH
+User: OU2
 
-Bot: Great! What's the total amount of your CCH travel expense?
+Bot: Great! What's the total amount of your OU2 travel expense?
 
 User: $6,500
 
@@ -1066,10 +1066,10 @@ Bot: Is this expense funded by a grant (fund codes 42000 or 41235)?
 
 User: Yes
 
-Bot: Perfect! For a CCH Travel expense of $6,500 on a grant fund:
+Bot: Perfect! For a OU2 Travel expense of $6,500 on a grant fund:
      1. First Superior
-     2. CCH Approvers Greater Than 5k dollars
-     3. CCH Grant Fund Approvers Level 1
+     2. OU2 Approvers Greater Than 5k dollars
+     3. OU2 Grant Fund Approvers Level 1
      
      Your expense will go through three approval levels since it's 
      over $5,000 and grant-funded.
@@ -1077,13 +1077,13 @@ Bot: Perfect! For a CCH Travel expense of $6,500 on a grant fund:
 
 **Example 3: Rule Explanation**
 ```
-User: What are the approval rules for CCF?
+User: What are the approval rules for OU3?
 
-Bot: Here are the CCF (Foundation) approval rules:
+Bot: Here are the OU3 (Foundation) approval rules:
      
-     • Expenses under $2,000: CCF Department Approver only
-     • Expenses $2,000 or more: CCF Department Approver, then Damon Howell
-     • If Damon Howell submits: CCF Department Approver only (Damon is skipped)
+     • Expenses under $2,000: OU3 Department Approver only
+     • Expenses $2,000 or more: OU3 Department Approver, then Special Approver
+     • If Special Approver submits: OU3 Department Approver only (Damon is skipped)
      • No department approver: Automatically routes to SYSADMIN
      
      Would you like to check a specific expense amount?
@@ -1105,7 +1105,7 @@ describe('ICA Context Studio Integration', () => {
   });
   
   test('should extract intent from natural language', async () => {
-    const message = "Who approves my CCP mileage of $800?";
+    const message = "Who approves my OU1 mileage of $800?";
     const result = await chatInterface.processLocally(message);
     
     expect(result.data.success).toBe(true);
@@ -1125,7 +1125,7 @@ describe('ICA Context Studio Integration', () => {
     // Second turn
     await chatInterface.handleSubmit({
       preventDefault: () => {},
-      target: { value: "CCH" }
+      target: { value: "OU2" }
     });
     
     // Should ask for amount
@@ -1159,8 +1159,8 @@ describe('MCP Server', () => {
   
   test('should handle get_approval_chain tool', async () => {
     const result = await mcpServer.callTool('get_approval_chain', {
-      operating_unit: 'CCP',
-      template: 'CCP Local Mileage Expense',
+      operating_unit: 'OU1',
+      template: 'OU1 Local Mileage Expense',
       amount: 800
     });
     
@@ -1171,7 +1171,7 @@ describe('MCP Server', () => {
   test('should provide resources', async () => {
     const rules = await mcpServer.readResource('expense://rules/all');
     expect(rules).toBeDefined();
-    expect(rules.CCP).toBeDefined();
+    expect(rules.OU1).toBeDefined();
   });
 });
 ```

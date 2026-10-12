@@ -51,10 +51,10 @@ schema:
 
 # Core Entities
 entities:
-  - OperatingUnit (CCP, CCH, CCF)
+  - OperatingUnit (OU1, OU2, OU3)
   - ExpenseTemplate (Travel, Mileage, Tuition, etc.)
   - ExpenseAmount (numeric, USD)
-  - GrantFund (boolean, CCH only)
+  - GrantFund (boolean, OU2 only)
   - SpecialSubmitter (text, specific names)
   - ApprovalChain (array of approvers)
 
@@ -92,9 +92,9 @@ knowledge:
    Type: Categorical
    Description: Organizational unit in Oracle EBS
    Values:
-     - CCP (Primary Operating Unit, OU 101)
-     - CCH (Healthcare Unit, OU 102)
-     - CCF (Foundation Unit, OU 121)
+     - OU1 (Primary Operating Unit, OU 101)
+     - OU2 (Healthcare Unit, OU 102)
+     - OU3 (Foundation Unit, OU 121)
    ```
 
    **Entity 2: ExpenseTemplate**
@@ -103,9 +103,9 @@ knowledge:
    Type: Text
    Description: Type of expense report
    Categories:
-     CCP: [Local Mileage, Non-Travel, Travel-Other, Tuition]
-     CCH: [Travel, Non-Travel, Non-Nursing Tuition, Nursing Tuition]
-     CCF: [Standard Expense]
+     OU1: [Local Mileage, Non-Travel, Travel-Other, Tuition]
+     OU2: [Travel, Non-Travel, Non-Nursing Tuition, Nursing Tuition]
+     OU3: [Standard Expense]
    ```
 
    **Entity 3: ExpenseAmount**
@@ -124,7 +124,7 @@ knowledge:
    Name: GrantFund
    Type: Boolean
    Description: Grant-funded expense indicator
-   Applicable: CCH only
+   Applicable: OU2 only
    Fund Codes: 42000, 41235
    ```
 
@@ -142,12 +142,12 @@ knowledge:
 5. **Add Business Rules Structure:**
    ```
    Rule Sets:
-     - CCP_Rules (5 rules)
-     - CCH_Rules (6 rules)
-     - CCF_Rules (4 rules)
+     - OU1_Rules (5 rules)
+     - OU2_Rules (6 rules)
+     - OU3_Rules (4 rules)
    
    Rule Format:
-     - ID (e.g., CCP-1)
+     - ID (e.g., OU1-1)
      - Conditions (when to apply)
      - Actions (approval chain)
    ```
@@ -245,10 +245,10 @@ Parameters:
 ```
 You are an expert Oracle iExpense approval assistant. You help employees 
 understand who will approve their expense reports based on:
-- Operating Unit (CCP, CCH, or CCF)
+- Operating Unit (OU1, OU2, or OU3)
 - Expense type/template
 - Expense amount
-- Grant fund status (for CCH)
+- Grant fund status (for OU2)
 - Special submitter rules
 
 You have access to comprehensive approval rules for all three operating 
@@ -269,9 +269,9 @@ Always be professional and concise.
 **Organize your knowledge into categories:**
 
 1. **Business Rules**
-   - CCP approval rules
-   - CCH approval rules
-   - CCF approval rules
+   - OU1 approval rules
+   - OU2 approval rules
+   - OU3 approval rules
 
 2. **Reference Data**
    - Operating unit configurations
@@ -436,65 +436,65 @@ Bring your content into the context. Connect data sources, ingest and process co
 
 2. Select **"Business Rules"**
 
-3. **Input CCP Rules:**
+3. **Input OU1 Rules:**
    ```json
    {
-     "rule_set": "CCP_Approval_Rules",
-     "operating_unit": "CCP",
+     "rule_set": "OU1_Approval_Rules",
+     "operating_unit": "OU1",
      "rules": [
        {
-         "id": "CCP-1",
+         "id": "OU1-1",
          "name": "Tuition Expenses Routing",
          "priority": 1,
          "conditions": {
-           "template": "CCP Tuition Expenses",
-           "submitter_not_in": ["Karen Martino", "Melissa"]
+           "template": "OU1 Tuition Expenses",
+           "submitter_not_in": ["Special Approver1", "Special Approver2"]
          },
          "approval_chain": [
-           "CCP and CCH Non Nursing Tuition Approvers",
+           "OU1 and OU2 Non Nursing Tuition Approvers",
            "Level 2 Approvers"
          ]
        },
        {
-         "id": "CCP-2",
+         "id": "OU1-2",
          "name": "Non-Travel DBMS Required",
          "priority": 2,
          "conditions": {
-           "template_in": ["CCP Non-Travel Expenses", "CCP Travel-Other Expenses"],
+           "template_in": ["OU1 Non-Travel Expenses", "OU1 Travel-Other Expenses"],
            "amount_greater_than": 0
          },
          "approval_chain": [
-           "CCP Department Approver",
-           "CCP DBMS Approvers"
+           "OU1 Department Approver",
+           "OU1 DBMS Approvers"
          ]
        },
        {
-         "id": "CCP-3",
+         "id": "OU1-3",
          "name": "Mileage High Amount",
          "priority": 3,
          "conditions": {
-           "template": "CCP Local Mileage Expense",
+           "template": "OU1 Local Mileage Expense",
            "amount_greater_than_or_equal": 1000
          },
          "approval_chain": [
-           "CCP Department Approver",
-           "CCP DBMS Approvers"
+           "OU1 Department Approver",
+           "OU1 DBMS Approvers"
          ]
        },
        {
-         "id": "CCP-4",
+         "id": "OU1-4",
          "name": "Mileage Low Amount",
          "priority": 4,
          "conditions": {
-           "template": "CCP Local Mileage Expense",
+           "template": "OU1 Local Mileage Expense",
            "amount_less_than": 1000
          },
          "approval_chain": [
-           "CCP Department Approver"
+           "OU1 Department Approver"
          ]
        },
        {
-         "id": "CCP-5",
+         "id": "OU1-5",
          "name": "No Dept Approver Fallback",
          "priority": 5,
          "conditions": {
@@ -509,134 +509,134 @@ Bring your content into the context. Connect data sources, ingest and process co
    }
    ```
 
-4. **Input CCH Rules:**
+4. **Input OU2 Rules:**
    ```json
    {
-     "rule_set": "CCH_Approval_Rules",
-     "operating_unit": "CCH",
+     "rule_set": "OU2_Approval_Rules",
+     "operating_unit": "OU2",
      "rules": [
        {
-         "id": "CCH-1",
+         "id": "OU2-1",
          "name": "Travel Low Amount Grant",
          "conditions": {
-           "template_in": ["CCH Travel Expenses", "CCH Non-Travel Expenses"],
+           "template_in": ["OU2 Travel Expenses", "OU2 Non-Travel Expenses"],
            "amount_less_than_or_equal": 5000,
            "grant_fund": true
          },
          "approval_chain": [
            "First Superior",
-           "CCH Grant Fund Approvers Level 1"
+           "OU2 Grant Fund Approvers Level 1"
          ]
        },
        {
-         "id": "CCH-2",
+         "id": "OU2-2",
          "name": "Travel Low Amount Non-Grant",
          "conditions": {
-           "template_in": ["CCH Travel Expenses", "CCH Non-Travel Expenses"],
+           "template_in": ["OU2 Travel Expenses", "OU2 Non-Travel Expenses"],
            "amount_less_than_or_equal": 5000,
            "grant_fund": false
          },
          "approval_chain": [
            "First Superior",
-           "CCH Non Grant Fund Approvers Level 1"
+           "OU2 Non Grant Fund Approvers Level 1"
          ]
        },
        {
-         "id": "CCH-3",
+         "id": "OU2-3",
          "name": "Travel High Amount Grant",
          "conditions": {
-           "template_in": ["CCH Travel Expenses", "CCH Non-Travel Expenses"],
+           "template_in": ["OU2 Travel Expenses", "OU2 Non-Travel Expenses"],
            "amount_greater_than": 5000,
            "grant_fund": true
          },
          "approval_chain": [
            "First Superior",
-           "CCH Approvers Greater Than 5k dollars",
-           "CCH Grant Fund Approvers Level 1"
+           "OU2 Approvers Greater Than 5k dollars",
+           "OU2 Grant Fund Approvers Level 1"
          ]
        },
        {
-         "id": "CCH-4",
+         "id": "OU2-4",
          "name": "Travel High Amount Non-Grant",
          "conditions": {
-           "template_in": ["CCH Travel Expenses", "CCH Non-Travel Expenses"],
+           "template_in": ["OU2 Travel Expenses", "OU2 Non-Travel Expenses"],
            "amount_greater_than": 5000,
            "grant_fund": false
          },
          "approval_chain": [
            "First Superior",
-           "CCH Approvers Greater Than 5k dollars",
-           "CCH Non Grant Fund Approvers Level 1"
+           "OU2 Approvers Greater Than 5k dollars",
+           "OU2 Non Grant Fund Approvers Level 1"
          ]
        },
        {
-         "id": "CCH-5",
+         "id": "OU2-5",
          "name": "Non-Nursing Tuition",
          "conditions": {
-           "template": "CCH Non-Nursing Tuition Expenses",
-           "submitter_not_in": ["Karen Martino", "Melissa"]
+           "template": "OU2 Non-Nursing Tuition Expenses",
+           "submitter_not_in": ["Special Approver1", "Special Approver2"]
          },
          "approval_chain": [
-           "CCP and CCH Non Nursing Tuition Approvers",
+           "OU1 and OU2 Non Nursing Tuition Approvers",
            "Level 2 Approvers"
          ]
        },
        {
-         "id": "CCH-6",
+         "id": "OU2-6",
          "name": "Nursing Tuition Self Approval",
          "conditions": {
-           "template": "CCH Nursing Tuition Expenses"
+           "template": "OU2 Nursing Tuition Expenses"
          },
          "approval_chain": [
-           "CCH Nursing Tuition Self Approval group"
+           "OU2 Nursing Tuition Self Approval group"
          ]
        }
      ]
    }
    ```
 
-5. **Input CCF Rules:**
+5. **Input OU3 Rules:**
    ```json
    {
-     "rule_set": "CCF_Approval_Rules",
-     "operating_unit": "CCF",
+     "rule_set": "OU3_Approval_Rules",
+     "operating_unit": "OU3",
      "rules": [
        {
-         "id": "CCF-1",
+         "id": "OU3-1",
          "name": "Low Amount Standard",
          "conditions": {
            "amount_less_than": 2000,
-           "submitter_not": "Damon Howell"
+           "submitter_not": "Special Approver"
          },
          "approval_chain": [
-           "CCF Department Approver"
+           "OU3 Department Approver"
          ]
        },
        {
-         "id": "CCF-2",
+         "id": "OU3-2",
          "name": "High Amount Standard",
          "conditions": {
            "amount_greater_than_or_equal": 2000,
-           "submitter_not": "Damon Howell"
+           "submitter_not": "Special Approver"
          },
          "approval_chain": [
-           "CCF Department Approver",
-           "Damon Howell"
+           "OU3 Department Approver",
+           "Special Approver"
          ]
        },
        {
-         "id": "CCF-3",
-         "name": "Damon Submitter Skip",
+         "id": "OU3-3",
+         "name": "Special Approver Submitter Skip",
          "conditions": {
-           "submitter": "Damon Howell"
+           "submitter": "Special Approver"
          },
          "approval_chain": [
-           "CCF Department Approver"
+           "OU3 Department Approver"
          ],
          "note": "Damon is skipped in his own submissions"
        },
        {
-         "id": "CCF-4",
+         "id": "OU3-4",
          "name": "No Dept Approver Fallback",
          "conditions": {
            "no_dept_approver": true
@@ -685,36 +685,36 @@ Bring your content into the context. Connect data sources, ingest and process co
 
 2. **Test Query 1:**
    ```
-   Input: "Who approves my CCP mileage expense of $800?"
+   Input: "Who approves my OU1 mileage expense of $800?"
    
    Expected: 
-   - Identify OU: CCP
+   - Identify OU: OU1
    - Identify template: Local Mileage
    - Identify amount: $800
-   - Apply rule: CCP-4 (amount < $1000)
-   - Return: CCP Department Approver
+   - Apply rule: OU1-4 (amount < $1000)
+   - Return: OU1 Department Approver
    ```
 
 3. **Test Query 2:**
    ```
-   Input: "I need to submit a CCH travel expense for $6,000 on a grant"
+   Input: "I need to submit a OU2 travel expense for $6,000 on a grant"
    
    Expected:
-   - Identify OU: CCH
+   - Identify OU: OU2
    - Identify template: Travel
    - Identify amount: $6,000
    - Identify grant: Yes
-   - Apply rule: CCH-3 (amount > $5000, grant)
+   - Apply rule: OU2-3 (amount > $5000, grant)
    - Return: First Superior → Approvers >5k → Grant Fund Approvers L1
    ```
 
 4. **Test Query 3:**
    ```
-   Input: "What are the approval rules for CCF?"
+   Input: "What are the approval rules for OU3?"
    
    Expected:
-   - Identify OU: CCF
-   - Return: Summary of CCF-1 through CCF-4 rules
+   - Identify OU: OU3
+   - Return: Summary of OU3-1 through OU3-4 rules
    ```
 
 5. **Review responses** and adjust if needed
@@ -884,11 +884,11 @@ Make your context accessible to external applications. Generate credentials, cop
 
 **Test in Bob:**
 ```
-You: @iexpense-approval Who approves my CCP mileage of $800?
+You: @iexpense-approval Who approves my OU1 mileage of $800?
 
-Bob: Based on the iExpense approval rules, for a CCP Local Mileage 
+Bob: Based on the iExpense approval rules, for a OU1 Local Mileage 
 expense of $800, the approval chain is:
-1. CCP Department Approver
+1. OU1 Department Approver
 
 Since the amount is less than $1,000, only your department approver 
 is required.
@@ -931,8 +931,8 @@ is required.
    const result = await client.callTool({
      name: 'get_approval_chain',
      arguments: {
-       operating_unit: 'CCP',
-       template: 'CCP Local Mileage Expense',
+       operating_unit: 'OU1',
+       template: 'OU1 Local Mileage Expense',
        amount: 800
      }
    });
@@ -1036,8 +1036,8 @@ is required.
         -d '{
           "name": "get_approval_chain",
           "arguments": {
-            "operating_unit": "CCP",
-            "template": "CCP Local Mileage Expense",
+            "operating_unit": "OU1",
+            "template": "OU1 Local Mileage Expense",
             "amount": 800
           }
         }' \
@@ -1051,21 +1051,21 @@ is required.
      "approvalChain": [
        {
          "sequence": 1,
-         "approverGroup": "CCP Department Approver"
+         "approverGroup": "OU1 Department Approver"
        }
      ],
      "metadata": {
-       "operatingUnit": "CCP",
-       "template": "CCP Local Mileage Expense",
+       "operatingUnit": "OU1",
+       "template": "OU1 Local Mileage Expense",
        "amount": 800,
-       "ruleApplied": "CCP-4"
+       "ruleApplied": "OU1-4"
      }
    }
    ```
 
 4. **Test in Bob IDE:**
    - Open Bob IDE
-   - Type: `@iexpense-approval Who approves my CCP mileage of $800?`
+   - Type: `@iexpense-approval Who approves my OU1 mileage of $800?`
    - Verify Bob uses your MCP server
    - Check response accuracy
 
@@ -1110,7 +1110,7 @@ is required.
 ### ✅ Step 3: Sources & Data - COMPLETE
 - [x] Uploaded all documentation files
 - [x] Uploaded code files (rules_engine.js, app.js)
-- [x] Added structured business rules (CCP, CCH, CCF)
+- [x] Added structured business rules (OU1, OU2, OU3)
 - [x] Validated data quality
 - [x] Tested with sample queries
 

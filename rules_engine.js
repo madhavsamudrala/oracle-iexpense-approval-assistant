@@ -4,9 +4,9 @@
  * 
  * This module implements Oracle AME (Approval Management Engine) business rules
  * for determining expense report approval chains across three Operating Units:
- * - CCP (OU 101)
- * - CCH (OU 102)
- * - CCF (OU 121)
+ * - OU1 (OU 101)
+ * - OU2 (OU 102)
+ * - OU3 (OU 121)
  * 
  * All rules are embedded client-side for zero backend dependencies.
  */
@@ -19,36 +19,36 @@
  * Operating Units Configuration
  */
 const OPERATING_UNITS = {
-  CCP: {
+  OU1: {
     id: 101,
-    name: 'CCP',
-    displayName: 'CCP (OU 101)',
+    name: 'OU1',
+    displayName: 'OU1 (OU 101)',
     templates: [
-      'CCP Tuition Expenses',
-      'CCP Non-Travel Expenses',
-      'CCP Travel Expenses-Other',
-      'CCP Local Mileage Expense'
+      'OU1 Tuition Expenses',
+      'OU1 Non-Travel Expenses',
+      'OU1 Travel Expenses-Other',
+      'OU1 Local Mileage Expense'
     ],
     requiresGrantFund: false
   },
-  CCH: {
+  OU2: {
     id: 102,
-    name: 'CCH',
-    displayName: 'CCH (OU 102)',
+    name: 'OU2',
+    displayName: 'OU2 (OU 102)',
     templates: [
-      'CCH Non-Travel Expenses',
-      'CCH Travel Expenses',
-      'CCH Non-Nursing Tuition',
-      'CCH Nursing Tuition'
+      'OU2 Non-Travel Expenses',
+      'OU2 Travel Expenses',
+      'OU2 Non-Nursing Tuition',
+      'OU2 Nursing Tuition'
     ],
     requiresGrantFund: true // Grant fund differentiation required for travel/non-travel
   },
-  CCF: {
+  OU3: {
     id: 121,
-    name: 'CCF',
-    displayName: 'CCF (OU 121)',
+    name: 'OU3',
+    displayName: 'OU3 (OU 121)',
     templates: [
-      'CCF Standard Expense'
+      'OU3 Standard Expense'
     ],
     requiresGrantFund: false
   }
@@ -58,22 +58,22 @@ const OPERATING_UNITS = {
  * Approver Groups Configuration
  */
 const APPROVER_GROUPS = {
-  // CCP Approvers
-  CCP_DEPT_APPROVER: 'CCP Department Approver',
-  CCP_DBMS_APPROVERS: 'CCP DBMS Approvers',
-  CCP_CCH_NON_NURSING_TUITION_L1: 'CCP and CCH Non Nursing Tuition Approvers',
-  CCP_CCH_NON_NURSING_TUITION_L2: 'CCP and CCH Non Nursing Tuition Approvers L2',
+  // OU1 Approvers
+  OU1_DEPT_APPROVER: 'OU1 Department Approver',
+  OU1_DBMS_APPROVERS: 'OU1 DBMS Approvers',
+  OU1_OU2_NON_NURSING_TUITION_L1: 'OU1 and OU2 Non Nursing Tuition Approvers',
+  OU1_OU2_NON_NURSING_TUITION_L2: 'OU1 and OU2 Non Nursing Tuition Approvers L2',
   
-  // CCH Approvers
-  CCH_FIRST_SUPERIOR: 'First Superior',
-  CCH_GRANT_FUND_L1: 'CCH Grant Fund Approvers Level 1',
-  CCH_NON_GRANT_FUND_L1: 'CCH Non Grant Fund Approvers Level 1',
-  CCH_APPROVERS_GT_5K: 'CCH Approvers Greater Than 5k dollars',
-  CCH_NURSING_TUITION_SELF: 'CCH Nursing Tuition Self Approval group',
+  // OU2 Approvers
+  OU2_FIRST_SUPERIOR: 'First Superior',
+  OU2_GRANT_FUND_L1: 'OU2 Grant Fund Approvers Level 1',
+  OU2_NON_GRANT_FUND_L1: 'OU2 Non Grant Fund Approvers Level 1',
+  OU2_APPROVERS_GT_5K: 'OU2 Approvers Greater Than 5k dollars',
+  OU2_NURSING_TUITION_SELF: 'OU2 Nursing Tuition Self Approval group',
   
-  // CCF Approvers
-  CCF_DEPT_APPROVER: 'CCF Department Approver',
-  CCF_DAMON_HOWELL: 'Damon Howell',
+  // OU3 Approvers
+  OU3_DEPT_APPROVER: 'OU3 Department Approver',
+  OU3_SPECIAL_APPROVER: 'Special Approver',
   
   // System
   SYSADMIN: 'SYSADMIN'
@@ -83,22 +83,22 @@ const APPROVER_GROUPS = {
  * Special Submitters Configuration
  */
 const SPECIAL_SUBMITTERS = {
-  KAREN_MARTINO: {
-    name: 'Karen Martino',
+  SPECIAL_APPROVER1: {
+    name: 'Special Approver1',
     aliases: ['karen', 'martino', 'karen martino', 'k martino', 'k. martino'],
-    affectedOUs: ['CCP', 'CCH'],
+    affectedOUs: ['OU1', 'OU2'],
     affectedTemplates: ['tuition']
   },
   MELISSA: {
-    name: 'Melissa',
+    name: 'Special Approver2',
     aliases: ['melissa'],
-    affectedOUs: ['CCP', 'CCH'],
+    affectedOUs: ['OU1', 'OU2'],
     affectedTemplates: ['tuition']
   },
-  DAMON_HOWELL: {
-    name: 'Damon Howell',
+  SPECIAL_APPROVER: {
+    name: 'Special Approver',
     aliases: ['damon', 'howell', 'damon howell', 'd howell', 'd. howell'],
-    affectedOUs: ['CCF'],
+    affectedOUs: ['OU3'],
     affectedTemplates: ['all']
   }
 };
@@ -108,7 +108,7 @@ const SPECIAL_SUBMITTERS = {
  */
 const ERROR_MESSAGES = {
   SYSTEM_ERROR: 'Approval information is temporarily unavailable due to a system issue. Please try again later.',
-  MISSING_OU: 'Please specify which operating unit: CCP, CCH, or CCF',
+  MISSING_OU: 'Please specify which operating unit: OU1, OU2, or OU3',
   MISSING_TEMPLATE: 'Please select an expense template',
   MISSING_AMOUNT: 'Please enter the total expense amount',
   INVALID_AMOUNT: 'Please enter a valid amount greater than $0',
@@ -124,7 +124,7 @@ const ERROR_MESSAGES = {
 /**
  * Check if a submitter is a special submitter
  * @param {string} submitterName - Name of the submitter
- * @param {Array<string>} specialSubmitterKeys - Keys to check (e.g., ['KAREN_MARTINO', 'MELISSA'])
+ * @param {Array<string>} specialSubmitterKeys - Keys to check (e.g., ['SPECIAL_APPROVER1', 'MELISSA'])
  * @returns {boolean} True if submitter matches any of the special submitters
  */
 function isSpecialSubmitter(submitterName, specialSubmitterKeys) {
@@ -158,19 +158,19 @@ function normalizeTemplate(template) {
 }
 
 /**
- * Check if template requires grant fund information (CCH only)
+ * Check if template requires grant fund information (OU2 only)
  * @param {string} operatingUnit - Operating unit
  * @param {string} template - Template name
  * @returns {boolean} True if grant fund info is required
  */
 function requiresGrantFundInfo(operatingUnit, template) {
-  if (operatingUnit !== 'CCH') {
+  if (operatingUnit !== 'OU2') {
     return false;
   }
   
   const normalizedTemplate = normalizeTemplate(template);
-  return normalizedTemplate === 'CCH Non-Travel Expenses' || 
-         normalizedTemplate === 'CCH Travel Expenses';
+  return normalizedTemplate === 'OU2 Non-Travel Expenses' || 
+         normalizedTemplate === 'OU2 Travel Expenses';
 }
 
 /**
@@ -240,7 +240,7 @@ function validateInput(input) {
   } else if (!OPERATING_UNITS[input.operatingUnit]) {
     errors.push({
       field: 'operatingUnit',
-      message: 'Invalid operating unit. Please select CCP, CCH, or CCF.'
+      message: 'Invalid operating unit. Please select OU1, OU2, or OU3.'
     });
   }
   
@@ -268,8 +268,8 @@ function validateInput(input) {
     }
   }
   
-  // CCH-specific: Grant Fund (for travel/non-travel templates)
-  if (input.operatingUnit === 'CCH' && requiresGrantFundInfo(input.operatingUnit, input.template)) {
+  // OU2-specific: Grant Fund (for travel/non-travel templates)
+  if (input.operatingUnit === 'OU2' && requiresGrantFundInfo(input.operatingUnit, input.template)) {
     if (input.isGrantFund === undefined || input.isGrantFund === null) {
       errors.push({
         field: 'isGrantFund',
@@ -285,115 +285,115 @@ function validateInput(input) {
 }
 
 // ============================================================================
-// CCP RULES ENGINE (OU 101)
+// OU1 RULES ENGINE (OU 101)
 // ============================================================================
 
 /**
- * Evaluate CCP approval rules
+ * Evaluate OU1 approval rules
  * @param {Object} input - Expense input data
  * @returns {Array<string>|null} Array of approver groups or null if no rule matches
  */
-function evaluateCCPRules(input) {
+function evaluateOU1Rules(input) {
   const { template, amount, submitterName } = input;
   const normalizedTemplate = normalizeTemplate(template);
   
-  // Rule CCP-1: Tuition Expenses
-  if (normalizedTemplate === 'CCP Tuition Expenses') {
-    // Check if submitter is Karen Martino or Melissa (they have different routing)
-    if (!isSpecialSubmitter(submitterName, ['KAREN_MARTINO', 'MELISSA'])) {
+  // Rule OU1-1: Tuition Expenses
+  if (normalizedTemplate === 'OU1 Tuition Expenses') {
+    // Check if submitter is Special Approver1 or Special Approver2 (they have different routing)
+    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'MELISSA'])) {
       return [
-        APPROVER_GROUPS.CCP_CCH_NON_NURSING_TUITION_L1,
-        APPROVER_GROUPS.CCP_CCH_NON_NURSING_TUITION_L2
+        APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L1,
+        APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L2
       ];
     }
-    // If Karen or Melissa, different routing applies (not defined in rules, return null)
+    // If Karen or Special Approver2, different routing applies (not defined in rules, return null)
     return null;
   }
   
-  // Rule CCP-2: Travel and Non-Travel (DBMS Required)
-  if (normalizedTemplate === 'CCP Non-Travel Expenses' || 
-      normalizedTemplate === 'CCP Travel Expenses-Other') {
+  // Rule OU1-2: Travel and Non-Travel (DBMS Required)
+  if (normalizedTemplate === 'OU1 Non-Travel Expenses' || 
+      normalizedTemplate === 'OU1 Travel Expenses-Other') {
     if (amount > 0) {
       return [
-        APPROVER_GROUPS.CCP_DEPT_APPROVER,
-        APPROVER_GROUPS.CCP_DBMS_APPROVERS
+        APPROVER_GROUPS.OU1_DEPT_APPROVER,
+        APPROVER_GROUPS.OU1_DBMS_APPROVERS
       ];
     }
   }
   
-  // Rules CCP-3 & CCP-4: Local Mileage
-  if (normalizedTemplate === 'CCP Local Mileage Expense') {
-    // Rule CCP-3: Local Mileage ≥ $1,000
+  // Rules OU1-3 & OU1-4: Local Mileage
+  if (normalizedTemplate === 'OU1 Local Mileage Expense') {
+    // Rule OU1-3: Local Mileage ≥ $1,000
     if (amount >= 1000) {
       return [
-        APPROVER_GROUPS.CCP_DEPT_APPROVER,
-        APPROVER_GROUPS.CCP_DBMS_APPROVERS
+        APPROVER_GROUPS.OU1_DEPT_APPROVER,
+        APPROVER_GROUPS.OU1_DBMS_APPROVERS
       ];
     }
-    // Rule CCP-4: Local Mileage < $1,000
+    // Rule OU1-4: Local Mileage < $1,000
     else {
       return [
-        APPROVER_GROUPS.CCP_DEPT_APPROVER
+        APPROVER_GROUPS.OU1_DEPT_APPROVER
       ];
     }
   }
   
-  // Rule CCP-5: No Department Approver Found
+  // Rule OU1-5: No Department Approver Found
   // This is handled at the system level, return null to indicate undefined scenario
   return null;
 }
 
 // ============================================================================
-// CCH RULES ENGINE (OU 102)
+// OU2 RULES ENGINE (OU 102)
 // ============================================================================
 
 /**
- * Evaluate CCH approval rules
+ * Evaluate OU2 approval rules
  * @param {Object} input - Expense input data
  * @returns {Array<string>|null} Array of approver groups or null if no rule matches
  */
-function evaluateCCHRules(input) {
+function evaluateOU2Rules(input) {
   const { template, amount, isGrantFund, submitterName } = input;
   const normalizedTemplate = normalizeTemplate(template);
   
-  // Rule CCH-5: Non-Nursing Tuition
-  if (normalizedTemplate === 'CCH Non-Nursing Tuition') {
-    // Check if submitter is Karen Martino or Melissa (they have different routing)
-    if (!isSpecialSubmitter(submitterName, ['KAREN_MARTINO', 'MELISSA'])) {
+  // Rule OU2-5: Non-Nursing Tuition
+  if (normalizedTemplate === 'OU2 Non-Nursing Tuition') {
+    // Check if submitter is Special Approver1 or Special Approver2 (they have different routing)
+    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'MELISSA'])) {
       return [
-        APPROVER_GROUPS.CCP_CCH_NON_NURSING_TUITION_L1,
-        APPROVER_GROUPS.CCP_CCH_NON_NURSING_TUITION_L2
+        APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L1,
+        APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L2
       ];
     }
-    // If Karen or Melissa, different routing applies (not defined in rules, return null)
+    // If Karen or Special Approver2, different routing applies (not defined in rules, return null)
     return null;
   }
   
-  // Rule CCH-6: Nursing Tuition (Self Approval)
-  if (normalizedTemplate === 'CCH Nursing Tuition') {
+  // Rule OU2-6: Nursing Tuition (Self Approval)
+  if (normalizedTemplate === 'OU2 Nursing Tuition') {
     return [
-      APPROVER_GROUPS.CCH_NURSING_TUITION_SELF
+      APPROVER_GROUPS.OU2_NURSING_TUITION_SELF
     ];
   }
   
-  // Rules CCH-1 through CCH-4: Travel/Non-Travel with Grant Fund differentiation
-  if (normalizedTemplate === 'CCH Non-Travel Expenses' || 
-      normalizedTemplate === 'CCH Travel Expenses') {
+  // Rules OU2-1 through OU2-4: Travel/Non-Travel with Grant Fund differentiation
+  if (normalizedTemplate === 'OU2 Non-Travel Expenses' || 
+      normalizedTemplate === 'OU2 Travel Expenses') {
     
-    const baseApprovers = [APPROVER_GROUPS.CCH_FIRST_SUPERIOR];
+    const baseApprovers = [APPROVER_GROUPS.OU2_FIRST_SUPERIOR];
     
     // Check amount threshold: > $5,000 requires additional approver
     if (amount > 5000) {
-      baseApprovers.push(APPROVER_GROUPS.CCH_APPROVERS_GT_5K);
+      baseApprovers.push(APPROVER_GROUPS.OU2_APPROVERS_GT_5K);
     }
     
     // Add final approver based on grant fund status
     if (isGrantFund === true || isGrantFund === 'true') {
-      // Rules CCH-1 & CCH-3: Grant Funds
-      baseApprovers.push(APPROVER_GROUPS.CCH_GRANT_FUND_L1);
+      // Rules OU2-1 & OU2-3: Grant Funds
+      baseApprovers.push(APPROVER_GROUPS.OU2_GRANT_FUND_L1);
     } else {
-      // Rules CCH-2 & CCH-4: Non-Grant Funds
-      baseApprovers.push(APPROVER_GROUPS.CCH_NON_GRANT_FUND_L1);
+      // Rules OU2-2 & OU2-4: Non-Grant Funds
+      baseApprovers.push(APPROVER_GROUPS.OU2_NON_GRANT_FUND_L1);
     }
     
     return baseApprovers;
@@ -404,41 +404,41 @@ function evaluateCCHRules(input) {
 }
 
 // ============================================================================
-// CCF RULES ENGINE (OU 121)
+// OU3 RULES ENGINE (OU 121)
 // ============================================================================
 
 /**
- * Evaluate CCF approval rules
+ * Evaluate OU3 approval rules
  * @param {Object} input - Expense input data
  * @returns {Array<string>|null} Array of approver groups or null if no rule matches
  */
-function evaluateCCFRules(input) {
+function evaluateOU3Rules(input) {
   const { amount, submitterName } = input;
   
-  // Rule CCF-3: Damon's Own Submissions
-  if (isSpecialSubmitter(submitterName, ['DAMON_HOWELL'])) {
+  // Rule OU3-3: Damon's Own Submissions
+  if (isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER'])) {
     return [
-      APPROVER_GROUPS.CCF_DEPT_APPROVER
+      APPROVER_GROUPS.OU3_DEPT_APPROVER
       // Damon is skipped in his own submissions
     ];
   }
   
-  // Rule CCF-1: Standard Expenses < $2,000
+  // Rule OU3-1: Standard Expenses < $2,000
   if (amount < 2000) {
     return [
-      APPROVER_GROUPS.CCF_DEPT_APPROVER
+      APPROVER_GROUPS.OU3_DEPT_APPROVER
     ];
   }
   
-  // Rule CCF-2: Standard Expenses ≥ $2,000
+  // Rule OU3-2: Standard Expenses ≥ $2,000
   if (amount >= 2000) {
     return [
-      APPROVER_GROUPS.CCF_DEPT_APPROVER,
-      APPROVER_GROUPS.CCF_DAMON_HOWELL
+      APPROVER_GROUPS.OU3_DEPT_APPROVER,
+      APPROVER_GROUPS.OU3_SPECIAL_APPROVER
     ];
   }
   
-  // Rule CCF-4: No Department Approver Found
+  // Rule OU3-4: No Department Approver Found
   // This is handled at the system level, return null to indicate undefined scenario
   return null;
 }
@@ -452,10 +452,10 @@ function evaluateCCFRules(input) {
  * Main entry point for the rules engine
  * 
  * @param {Object} input - Expense input data
- * @param {string} input.operatingUnit - Operating unit (CCP, CCH, or CCF)
+ * @param {string} input.operatingUnit - Operating unit (OU1, OU2, or OU3)
  * @param {string} input.template - Expense template name
  * @param {number} input.amount - Expense amount
- * @param {boolean} [input.isGrantFund] - Grant fund status (CCH only)
+ * @param {boolean} [input.isGrantFund] - Grant fund status (OU2 only)
  * @param {string} [input.submitterName] - Submitter name (for special submitter detection)
  * @returns {Object} Approval chain result or error
  */
@@ -482,19 +482,19 @@ function determineApprovalChain(input) {
     let ruleApplied = '';
     
     switch (normalizedInput.operatingUnit) {
-      case 'CCP':
-        approvers = evaluateCCPRules(normalizedInput);
-        ruleApplied = 'CCP Rules';
+      case 'OU1':
+        approvers = evaluateOU1Rules(normalizedInput);
+        ruleApplied = 'OU1 Rules';
         break;
       
-      case 'CCH':
-        approvers = evaluateCCHRules(normalizedInput);
-        ruleApplied = 'CCH Rules';
+      case 'OU2':
+        approvers = evaluateOU2Rules(normalizedInput);
+        ruleApplied = 'OU2 Rules';
         break;
       
-      case 'CCF':
-        approvers = evaluateCCFRules(normalizedInput);
-        ruleApplied = 'CCF Rules';
+      case 'OU3':
+        approvers = evaluateOU3Rules(normalizedInput);
+        ruleApplied = 'OU3 Rules';
         break;
       
       default:
@@ -529,7 +529,7 @@ function determineApprovalChain(input) {
 
 /**
  * Get templates for a specific operating unit
- * @param {string} operatingUnit - Operating unit (CCP, CCH, or CCF)
+ * @param {string} operatingUnit - Operating unit (OU1, OU2, or OU3)
  * @returns {Array<string>} Array of template names
  */
 function getTemplatesForOU(operatingUnit) {

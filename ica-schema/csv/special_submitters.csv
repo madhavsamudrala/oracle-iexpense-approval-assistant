@@ -1,4 +1,4 @@
-submitter_id,name,special_rule,affected_operating_units,affected_templates
-KAREN_MARTINO,Karen Martino,Different tuition routing for CCP/CCH,CCP|CCH,"CCP Tuition Expenses, CCH Non-Nursing Tuition Expenses"
-MELISSA,Melissa,Different tuition routing for CCP/CCH,CCP|CCH,"CCP Tuition Expenses, CCH Non-Nursing Tuition Expenses"
-DAMON_HOWELL,Damon Howell,Skipped in CCF approval chain for own submissions,CCF,CCF Standard Expense
+﻿submitter_id,name,special_rule,affected_operating_units,affected_templates
+SPECIAL_APPROVER1,Special Approver1,Different tuition routing for OU1/OU2,OU1|OU2,"OU1 Tuition Expenses, OU2 Non-Nursing Tuition Expenses"
+SPECIAL_APPROVER2,Special Approver2,Different tuition routing for OU1/OU2,OU1|OU2,"OU1 Tuition Expenses, OU2 Non-Nursing Tuition Expenses"
+SPECIAL_APPROVER,Special Approver,Skipped in OU3 approval chain for own submissions,OU3,OU3 Standard Expense

@@ -1,13 +1,13 @@
-group_id,group_name,operating_unit,description,sequence_typical
-CCP_DEPT,CCP Department Approver,CCP,Department-level approver for CCP,1
-CCP_DBMS,CCP DBMS Approvers,CCP,Database Management System approvers for CCP,2
-CCP_CCH_TUITION,CCP and CCH Non Nursing Tuition Approvers,CCP|CCH,Tuition approvers for CCP and CCH,1
+﻿group_id,group_name,operating_unit,description,sequence_typical
+OU1_DEPT,OU1 Department Approver,OU1,Department-level approver for OU1,1
+OU1_DBMS,OU1 DBMS Approvers,OU1,Database Management System approvers for OU1,2
+OU1_OU2_TUITION,OU1 and OU2 Non Nursing Tuition Approvers,OU1|OU2,Tuition approvers for OU1 and OU2,1
 LEVEL_2,Level 2 Approvers,ALL,Second-level approvers,2
-CCH_FIRST_SUP,First Superior,CCH,Direct manager/supervisor,1
-CCH_GRANT,CCH Grant Fund Approvers Level 1,CCH,Grant fund approvers for CCH,2
-CCH_NON_GRANT,CCH Non Grant Fund Approvers Level 1,CCH,Non-grant fund approvers for CCH,2
-CCH_GT_5K,CCH Approvers Greater Than 5k dollars,CCH,Approvers for expenses over $5000,2
-CCH_NURSING,CCH Nursing Tuition Self Approval group,CCH,Self-approval group for nursing tuition,1
-CCF_DEPT,CCF Department Approver,CCF,Department-level approver for CCF,1
-DAMON_HOWELL,Damon Howell,CCF,Special approver for CCF high-value expenses,2
+OU2_FIRST_SUP,First Superior,OU2,Direct manager/supervisor,1
+OU2_GRANT,OU2 Grant Fund Approvers Level 1,OU2,Grant fund approvers for OU2,2
+OU2_NON_GRANT,OU2 Non Grant Fund Approvers Level 1,OU2,Non-grant fund approvers for OU2,2
+OU2_GT_5K,OU2 Approvers Greater Than 5k dollars,OU2,Approvers for expenses over $5000,2
+OU2_NURSING,OU2 Nursing Tuition Self Approval group,OU2,Self-approval group for nursing tuition,1
+OU3_DEPT,OU3 Department Approver,OU3,Department-level approver for OU3,1
+SPECIAL_APPROVER,Special Approver,OU3,Special approver for OU3 high-value expenses,2
 SYSADMIN,SYSADMIN,ALL,System administrator - fallback approver,1

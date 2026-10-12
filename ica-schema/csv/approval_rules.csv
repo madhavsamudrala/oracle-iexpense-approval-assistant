@@ -1,16 +1,16 @@
-rule_id,rule_name,operating_unit,priority,template,amount_condition,grant_fund,submitter_condition,approver_1,approver_2,approver_3
-CCP-1,Tuition Expenses Routing,CCP,1,CCP Tuition Expenses,,,"NOT IN: Karen Martino, Melissa",CCP and CCH Non Nursing Tuition Approvers,Level 2 Approvers,
-CCP-2,Non-Travel DBMS Required,CCP,2,"CCP Non-Travel Expenses, CCP Travel-Other Expenses",> 0,,,CCP Department Approver,CCP DBMS Approvers,
-CCP-3,Mileage High Amount,CCP,3,CCP Local Mileage Expense,>= 1000,,,CCP Department Approver,CCP DBMS Approvers,
-CCP-4,Mileage Low Amount,CCP,4,CCP Local Mileage Expense,< 1000,,,CCP Department Approver,,
-CCP-5,No Dept Approver Fallback,CCP,5,,,,no_dept_approver,SYSADMIN,,
-CCH-1,Travel Low Amount Grant,CCH,1,"CCH Travel Expenses, CCH Non-Travel Expenses",<= 5000,true,,First Superior,CCH Grant Fund Approvers Level 1,
-CCH-2,Travel Low Amount Non-Grant,CCH,2,"CCH Travel Expenses, CCH Non-Travel Expenses",<= 5000,false,,First Superior,CCH Non Grant Fund Approvers Level 1,
-CCH-3,Travel High Amount Grant,CCH,3,"CCH Travel Expenses, CCH Non-Travel Expenses",> 5000,true,,First Superior,CCH Approvers Greater Than 5k dollars,CCH Grant Fund Approvers Level 1
-CCH-4,Travel High Amount Non-Grant,CCH,4,"CCH Travel Expenses, CCH Non-Travel Expenses",> 5000,false,,First Superior,CCH Approvers Greater Than 5k dollars,CCH Non Grant Fund Approvers Level 1
-CCH-5,Non-Nursing Tuition,CCH,5,CCH Non-Nursing Tuition Expenses,,,"NOT IN: Karen Martino, Melissa",CCP and CCH Non Nursing Tuition Approvers,Level 2 Approvers,
-CCH-6,Nursing Tuition Self Approval,CCH,6,CCH Nursing Tuition Expenses,,,,CCH Nursing Tuition Self Approval group,,
-CCF-1,Low Amount Standard,CCF,1,,< 2000,,"NOT: Damon Howell",CCF Department Approver,,
-CCF-2,High Amount Standard,CCF,2,,>= 2000,,"NOT: Damon Howell",CCF Department Approver,Damon Howell,
-CCF-3,Damon Submitter Skip,CCF,3,,,,"IS: Damon Howell",CCF Department Approver,,
-CCF-4,No Dept Approver Fallback,CCF,4,,,,no_dept_approver,SYSADMIN,,
+﻿rule_id,rule_name,operating_unit,priority,template,amount_condition,grant_fund,submitter_condition,approver_1,approver_2,approver_3
+OU1-1,Tuition Expenses Routing,OU1,1,OU1 Tuition Expenses,,,"NOT IN: Special Approver1, Special Approver2",OU1 and OU2 Non Nursing Tuition Approvers,Level 2 Approvers,
+OU1-2,Non-Travel DBMS Required,OU1,2,"OU1 Non-Travel Expenses, OU1 Travel-Other Expenses",> 0,,,OU1 Department Approver,OU1 DBMS Approvers,
+OU1-3,Mileage High Amount,OU1,3,OU1 Local Mileage Expense,>= 1000,,,OU1 Department Approver,OU1 DBMS Approvers,
+OU1-4,Mileage Low Amount,OU1,4,OU1 Local Mileage Expense,< 1000,,,OU1 Department Approver,,
+OU1-5,No Dept Approver Fallback,OU1,5,,,,no_dept_approver,SYSADMIN,,
+OU2-1,Travel Low Amount Grant,OU2,1,"OU2 Travel Expenses, OU2 Non-Travel Expenses",<= 5000,true,,First Superior,OU2 Grant Fund Approvers Level 1,
+OU2-2,Travel Low Amount Non-Grant,OU2,2,"OU2 Travel Expenses, OU2 Non-Travel Expenses",<= 5000,false,,First Superior,OU2 Non Grant Fund Approvers Level 1,
+OU2-3,Travel High Amount Grant,OU2,3,"OU2 Travel Expenses, OU2 Non-Travel Expenses",> 5000,true,,First Superior,OU2 Approvers Greater Than 5k dollars,OU2 Grant Fund Approvers Level 1
+OU2-4,Travel High Amount Non-Grant,OU2,4,"OU2 Travel Expenses, OU2 Non-Travel Expenses",> 5000,false,,First Superior,OU2 Approvers Greater Than 5k dollars,OU2 Non Grant Fund Approvers Level 1
+OU2-5,Non-Nursing Tuition,OU2,5,OU2 Non-Nursing Tuition Expenses,,,"NOT IN: Special Approver1, Special Approver2",OU1 and OU2 Non Nursing Tuition Approvers,Level 2 Approvers,
+OU2-6,Nursing Tuition Self Approval,OU2,6,OU2 Nursing Tuition Expenses,,,,OU2 Nursing Tuition Self Approval group,,
+OU3-1,Low Amount Standard,OU3,1,,< 2000,,"NOT: Special Approver",OU3 Department Approver,,
+OU3-2,High Amount Standard,OU3,2,,>= 2000,,"NOT: Special Approver",OU3 Department Approver,Special Approver,
+OU3-3,Special Approver Skip,OU3,3,,,,"IS: Special Approver",OU3 Department Approver,,
+OU3-4,No Dept Approver Fallback,OU3,4,,,,no_dept_approver,SYSADMIN,,

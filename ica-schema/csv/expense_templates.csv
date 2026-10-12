@@ -1,10 +1,10 @@
-template_id,template_name,operating_unit,category,requires_grant_info
-CCP_MILEAGE,CCP Local Mileage Expense,CCP,Mileage,false
-CCP_NON_TRAVEL,CCP Non-Travel Expenses,CCP,Non-Travel,false
-CCP_TRAVEL_OTHER,CCP Travel-Other Expenses,CCP,Travel,false
-CCP_TUITION,CCP Tuition Expenses,CCP,Tuition,false
-CCH_TRAVEL,CCH Travel Expenses,CCH,Travel,true
-CCH_NON_TRAVEL,CCH Non-Travel Expenses,CCH,Non-Travel,true
-CCH_TUITION_NON_NURSING,CCH Non-Nursing Tuition Expenses,CCH,Tuition,false
-CCH_TUITION_NURSING,CCH Nursing Tuition Expenses,CCH,Tuition,false
-CCF_STANDARD,CCF Standard Expense,CCF,Standard,false
+﻿template_id,template_name,operating_unit,category,requires_grant_info
+OU1_MILEAGE,OU1 Local Mileage Expense,OU1,Mileage,false
+OU1_NON_TRAVEL,OU1 Non-Travel Expenses,OU1,Non-Travel,false
+OU1_TRAVEL_OTHER,OU1 Travel-Other Expenses,OU1,Travel,false
+OU1_TUITION,OU1 Tuition Expenses,OU1,Tuition,false
+OU2_TRAVEL,OU2 Travel Expenses,OU2,Travel,true
+OU2_NON_TRAVEL,OU2 Non-Travel Expenses,OU2,Non-Travel,true
+OU2_TUITION_NON_NURSING,OU2 Non-Nursing Tuition Expenses,OU2,Tuition,false
+OU2_TUITION_NURSING,OU2 Nursing Tuition Expenses,OU2,Tuition,false
+OU3_STANDARD,OU3 Standard Expense,OU3,Standard,false

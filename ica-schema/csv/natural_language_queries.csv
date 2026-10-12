@@ -1,6 +1,6 @@
-query_id,query_text,expected_operating_unit,expected_template,expected_amount,expected_grant_fund,expected_rule,expected_response
-QUERY_001,Who approves my CCP mileage expense of $800?,CCP,CCP Local Mileage Expense,800,,CCP-4,"For a CCP Local Mileage expense of $800, the approval chain is: 1. CCP Department Approver"
-QUERY_002,I need to submit a CCH travel expense for $6000 on a grant,CCH,CCH Travel Expenses,6000,true,CCH-3,"For a CCH Travel expense of $6,000 on a grant fund, the approval chain is: 1. First Superior, 2. CCH Approvers Greater Than 5k dollars, 3. CCH Grant Fund Approvers Level 1"
-QUERY_003,What are the approval rules for CCF?,CCF,,,,,CCF approval rules: Expenses under $2000 go to CCF Department Approver only. Expenses $2000 or more go to CCF Department Approver then Damon Howell. If Damon Howell submits he is skipped.
-QUERY_004,Show me CCP templates,CCP,,,,,CCP expense templates: 1. CCP Local Mileage Expense 2. CCP Non-Travel Expenses 3. CCP Travel-Other Expenses 4. CCP Tuition Expenses
-QUERY_005,What's the threshold for CCH expenses?,CCH,,,,,CCH has a $5000 threshold. Expenses over $5000 require additional approval. Also CCH differentiates between grant-funded and non-grant-funded expenses.
+﻿query_id,query_text,expected_operating_unit,expected_template,expected_amount,expected_grant_fund,expected_rule,expected_response
+QUERY_001,Who approves my OU1 mileage expense of $800?,OU1,OU1 Local Mileage Expense,800,,OU1-4,"For a OU1 Local Mileage expense of $800, the approval chain is: 1. OU1 Department Approver"
+QUERY_002,I need to submit a OU2 travel expense for $6000 on a grant,OU2,OU2 Travel Expenses,6000,true,OU2-3,"For a OU2 Travel expense of $6,000 on a grant fund, the approval chain is: 1. First Superior, 2. OU2 Approvers Greater Than 5k dollars, 3. OU2 Grant Fund Approvers Level 1"
+QUERY_003,What are the approval rules for OU3?,OU3,,,,,OU3 approval rules: Expenses under $2000 go to OU3 Department Approver only. Expenses $2000 or more go to OU3 Department Approver then Special Approver. If Special Approver submits he is skipped.
+QUERY_004,Show me OU1 templates,OU1,,,,,OU1 expense templates: 1. OU1 Local Mileage Expense 2. OU1 Non-Travel Expenses 3. OU1 Travel-Other Expenses 4. OU1 Tuition Expenses
+QUERY_005,What's the threshold for OU2 expenses?,OU2,,,,,OU2 has a $5000 threshold. Expenses over $5000 require additional approval. Also OU2 differentiates between grant-funded and non-grant-funded expenses.

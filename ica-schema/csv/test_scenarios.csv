@@ -1,11 +1,11 @@
-scenario_id,description,operating_unit,template,amount,currency,grant_fund,fund_code,submitter,expected_rule,expected_approver_1,expected_approver_2,expected_approver_3
-SCENARIO_001,CCP Low Mileage Expense,CCP,CCP Local Mileage Expense,800,USD,,,,CCP-4,CCP Department Approver,,
-SCENARIO_002,CCP High Mileage Expense,CCP,CCP Local Mileage Expense,1500,USD,,,,CCP-3,CCP Department Approver,CCP DBMS Approvers,
-SCENARIO_003,CCH Grant-Funded Travel Low Amount,CCH,CCH Travel Expenses,3000,USD,true,42000,,CCH-1,First Superior,CCH Grant Fund Approvers Level 1,
-SCENARIO_004,CCH Grant-Funded Travel High Amount,CCH,CCH Travel Expenses,6000,USD,true,42000,,CCH-3,First Superior,CCH Approvers Greater Than 5k dollars,CCH Grant Fund Approvers Level 1
-SCENARIO_005,CCH Non-Grant Travel Low Amount,CCH,CCH Travel Expenses,4000,USD,false,,,CCH-2,First Superior,CCH Non Grant Fund Approvers Level 1,
-SCENARIO_006,CCF Low Amount Standard,CCF,CCF Standard Expense,1500,USD,,,,CCF-1,CCF Department Approver,,
-SCENARIO_007,CCF High Amount Standard,CCF,CCF Standard Expense,2500,USD,,,,CCF-2,CCF Department Approver,Damon Howell,
-SCENARIO_008,CCF Damon Submitter,CCF,CCF Standard Expense,3000,USD,,,Damon Howell,CCF-3,CCF Department Approver,,
-SCENARIO_009,CCP Tuition Regular Submitter,CCP,CCP Tuition Expenses,5000,USD,,,John Doe,CCP-1,CCP and CCH Non Nursing Tuition Approvers,Level 2 Approvers,
-SCENARIO_010,CCH Nursing Tuition,CCH,CCH Nursing Tuition Expenses,3000,USD,,,,CCH-6,CCH Nursing Tuition Self Approval group,,
+﻿scenario_id,description,operating_unit,template,amount,currency,grant_fund,fund_code,submitter,expected_rule,expected_approver_1,expected_approver_2,expected_approver_3
+SCENARIO_001,OU1 Low Mileage Expense,OU1,OU1 Local Mileage Expense,800,USD,,,,OU1-4,OU1 Department Approver,,
+SCENARIO_002,OU1 High Mileage Expense,OU1,OU1 Local Mileage Expense,1500,USD,,,,OU1-3,OU1 Department Approver,OU1 DBMS Approvers,
+SCENARIO_003,OU2 Grant-Funded Travel Low Amount,OU2,OU2 Travel Expenses,3000,USD,true,42000,,OU2-1,First Superior,OU2 Grant Fund Approvers Level 1,
+SCENARIO_004,OU2 Grant-Funded Travel High Amount,OU2,OU2 Travel Expenses,6000,USD,true,42000,,OU2-3,First Superior,OU2 Approvers Greater Than 5k dollars,OU2 Grant Fund Approvers Level 1
+SCENARIO_005,OU2 Non-Grant Travel Low Amount,OU2,OU2 Travel Expenses,4000,USD,false,,,OU2-2,First Superior,OU2 Non Grant Fund Approvers Level 1,
+SCENARIO_006,OU3 Low Amount Standard,OU3,OU3 Standard Expense,1500,USD,,,,OU3-1,OU3 Department Approver,,
+SCENARIO_007,OU3 High Amount Standard,OU3,OU3 Standard Expense,2500,USD,,,,OU3-2,OU3 Department Approver,Special Approver,
+SCENARIO_008,OU3 Special Approver Submitter,OU3,OU3 Standard Expense,3000,USD,,,Special Approver,OU3-3,OU3 Department Approver,,
+SCENARIO_009,OU1 Tuition Regular Submitter,OU1,OU1 Tuition Expenses,5000,USD,,,John Doe,OU1-1,OU1 and OU2 Non Nursing Tuition Approvers,Level 2 Approvers,
+SCENARIO_010,OU2 Nursing Tuition,OU2,OU2 Nursing Tuition Expenses,3000,USD,,,,OU2-6,OU2 Nursing Tuition Self Approval group,,

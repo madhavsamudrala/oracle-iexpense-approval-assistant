@@ -22,10 +22,10 @@ The Oracle iExpense Approval Assistant is a web-based decision support tool that
 
 ### 1.3 Scope
 **In Scope:**
-- Approval chain determination for CCP (OU 101), CCH (OU 102), and CCF (OU 121)
+- Approval chain determination for OU1 (OU 101), OU2 (OU 102), and OU3 (OU 121)
 - Rule-based routing logic for all expense templates
 - Amount threshold evaluation
-- Grant vs. Non-Grant fund differentiation (CCH)
+- Grant vs. Non-Grant fund differentiation (OU2)
 - Special submitter handling
 - Professional user interface with responsive design
 
@@ -45,9 +45,9 @@ The Oracle iExpense Approval Assistant is a web-based decision support tool that
 
 | Operating Unit | OU ID | Description |
 |----------------|-------|-------------|
-| CCP | 101 | Primary operating unit with DBMS approval requirements |
-| CCH | 102 | Healthcare unit with grant/non-grant fund differentiation |
-| CCF | 121 | Foundation unit with simplified approval structure |
+| OU1 | 101 | Primary operating unit with DBMS approval requirements |
+| OU2 | 102 | Healthcare unit with grant/non-grant fund differentiation |
+| OU3 | 121 | Foundation unit with simplified approval structure |
 
 ### 2.2 Approval Management Engine (AME)
 The assistant replicates AME approval logic using client-side JavaScript, ensuring:
@@ -86,7 +86,7 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 **Actor:** Employee  
 **Preconditions:** User knows OU, template, and amount  
 **Main Flow:**
-1. User selects Operating Unit (CCP, CCH, or CCF)
+1. User selects Operating Unit (OU1, OU2, or OU3)
 2. User selects or enters Expense Template
 3. User enters Total Amount
 4. User provides additional information if required (grant fund, submitter name)
@@ -114,12 +114,12 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 
 ---
 
-### 4.3 UC-003: Grant Fund Differentiation (CCH Only)
+### 4.3 UC-003: Grant Fund Differentiation (OU2 Only)
 
-**Actor:** CCH Employee  
-**Preconditions:** User is submitting CCH expense  
+**Actor:** OU2 Employee  
+**Preconditions:** User is submitting OU2 expense  
 **Main Flow:**
-1. User selects CCH as Operating Unit
+1. User selects OU2 as Operating Unit
 2. User selects travel or non-travel template
 3. User enters amount
 4. System prompts for grant fund status
@@ -127,13 +127,13 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 6. System applies appropriate approval chain based on grant status
 
 **Postconditions:** Correct approval chain for grant or non-grant expense  
-**Success Criteria:** Grant fund question appears only for CCH expenses
+**Success Criteria:** Grant fund question appears only for OU2 expenses
 
 ---
 
 ### 4.4 UC-004: Special Submitter Handling
 
-**Actor:** Special Submitter (Karen Martino, Melissa, Damon Howell)  
+**Actor:** Special Submitter (Special Approver1, Special Approver2, Special Approver)  
 **Preconditions:** User is a special submitter with different routing  
 **Main Flow:**
 1. User enters their name or is identified
@@ -143,8 +143,8 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 
 **Postconditions:** Special routing rules applied correctly  
 **Success Criteria:** 
-- Karen/Melissa: Different tuition routing
-- Damon Howell: Skipped in CCF approval chain
+- Karen/Special Approver2: Different tuition routing
+- Special Approver: Skipped in OU3 approval chain
 
 ---
 
@@ -182,44 +182,44 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 
 ### 5.1 Epic: Approval Chain Determination
 
-#### Story 1: CCP Employee - Local Mileage
-**As a** CCP employee  
+#### Story 1: OU1 Employee - Local Mileage
+**As a** OU1 employee  
 **I want to** know who approves my local mileage expense  
 **So that** I can submit my expense with confidence
 
 **Acceptance Criteria:**
-- Given I select CCP and "Local Mileage" template
+- Given I select OU1 and "Local Mileage" template
 - When I enter an amount < $1,000
-- Then I see: CCP Department Approver only
+- Then I see: OU1 Department Approver only
 - When I enter an amount ≥ $1,000
-- Then I see: CCP Department Approver, then CCP DBMS Approvers
+- Then I see: OU1 Department Approver, then OU1 DBMS Approvers
 
 ---
 
-#### Story 2: CCH Employee - Grant-Funded Travel
-**As a** CCH employee with grant-funded travel  
+#### Story 2: OU2 Employee - Grant-Funded Travel
+**As a** OU2 employee with grant-funded travel  
 **I want to** understand my approval chain based on grant status  
 **So that** I can ensure proper fund allocation
 
 **Acceptance Criteria:**
-- Given I select CCH and "Travel Expenses"
+- Given I select OU2 and "Travel Expenses"
 - When I indicate grant fund (42000 or 41235) and amount ≤ $5,000
-- Then I see: First Superior, then CCH Grant Fund Approvers Level 1
+- Then I see: First Superior, then OU2 Grant Fund Approvers Level 1
 - When amount > $5,000
-- Then I see: First Superior, CCH Approvers Greater Than 5k, CCH Grant Fund Approvers Level 1
+- Then I see: First Superior, OU2 Approvers Greater Than 5k, OU2 Grant Fund Approvers Level 1
 
 ---
 
-#### Story 3: CCF Employee - Standard Expense
-**As a** CCF employee  
-**I want to** know if Damon Howell will approve my expense  
+#### Story 3: OU3 Employee - Standard Expense
+**As a** OU3 employee  
+**I want to** know if Special Approver will approve my expense  
 **So that** I can plan my submission timing
 
 **Acceptance Criteria:**
-- Given I select CCF and enter amount < $2,000
-- Then I see: CCF Department Approver only
+- Given I select OU3 and enter amount < $2,000
+- Then I see: OU3 Department Approver only
 - When amount ≥ $2,000
-- Then I see: CCF Department Approver, then Damon Howell
+- Then I see: OU3 Department Approver, then Special Approver
 
 ---
 
@@ -229,11 +229,11 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 **So that** I can submit educational reimbursement correctly
 
 **Acceptance Criteria:**
-- Given I select CCP or CCH and "Tuition" template
-- When I am NOT Karen Martino or Melissa
-- Then I see: CCP and CCH Non Nursing Tuition Approvers, then Level 2 Approvers
-- When template is "CCH Nursing Tuition"
-- Then I see: CCH Nursing Tuition Self Approval group
+- Given I select OU1 or OU2 and "Tuition" template
+- When I am NOT Special Approver1 or Special Approver2
+- Then I see: OU1 and OU2 Non Nursing Tuition Approvers, then Level 2 Approvers
+- When template is "OU2 Nursing Tuition"
+- Then I see: OU2 Nursing Tuition Self Approval group
 
 ---
 
@@ -271,10 +271,10 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 
 | ID | Requirement | Priority | Acceptance Criteria |
 |----|-------------|----------|---------------------|
-| FR-001 | Support all three Operating Units (CCP, CCH, CCF) | Must Have | All OU rules implemented correctly |
+| FR-001 | Support all three Operating Units (OU1, OU2, OU3) | Must Have | All OU rules implemented correctly |
 | FR-002 | Evaluate amount thresholds accurately | Must Have | Correct approval chain for all threshold scenarios |
-| FR-003 | Differentiate grant vs. non-grant funds (CCH) | Must Have | Proper routing based on fund codes 42000, 41235 |
-| FR-004 | Handle special submitters (Karen, Melissa, Damon) | Must Have | Modified routing applied correctly |
+| FR-003 | Differentiate grant vs. non-grant funds (OU2) | Must Have | Proper routing based on fund codes 42000, 41235 |
+| FR-004 | Handle special submitters (Karen, Special Approver2, Damon) | Must Have | Modified routing applied correctly |
 | FR-005 | Display approval chains in order | Must Have | Sequential approver list with clear numbering |
 | FR-006 | Provide missing information prompts | Must Have | Clear, actionable prompts for incomplete data |
 | FR-007 | Handle SYSADMIN routing scenarios | Must Have | Automatic routing message when no dept approver |
@@ -315,35 +315,35 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 
 ## 7. BUSINESS RULES SUMMARY
 
-### 7.1 CCP Rules (OU 101)
+### 7.1 OU1 Rules (OU 101)
 
 | Rule | Template | Condition | Approval Chain |
 |------|----------|-----------|----------------|
-| CCP-1 | Tuition Expenses | Not Karen/Melissa | Non Nursing Tuition Approvers → L2 |
-| CCP-2 | Non-Travel / Travel-Other | Amount > $0 | Dept Approver → DBMS Approvers |
-| CCP-3 | Local Mileage | Amount ≥ $1,000 | Dept Approver → DBMS Approvers |
-| CCP-4 | Local Mileage | Amount < $1,000 | Dept Approver |
-| CCP-5 | Any | No dept approver | SYSADMIN (automatic) |
+| OU1-1 | Tuition Expenses | Not Karen/Special Approver2 | Non Nursing Tuition Approvers → L2 |
+| OU1-2 | Non-Travel / Travel-Other | Amount > $0 | Dept Approver → DBMS Approvers |
+| OU1-3 | Local Mileage | Amount ≥ $1,000 | Dept Approver → DBMS Approvers |
+| OU1-4 | Local Mileage | Amount < $1,000 | Dept Approver |
+| OU1-5 | Any | No dept approver | SYSADMIN (automatic) |
 
-### 7.2 CCH Rules (OU 102)
+### 7.2 OU2 Rules (OU 102)
 
 | Rule | Template | Amount | Grant Fund | Approval Chain |
 |------|----------|--------|------------|----------------|
-| CCH-1 | Travel/Non-Travel | ≤ $5,000 | Yes | First Superior → Grant Fund Approvers L1 |
-| CCH-2 | Travel/Non-Travel | ≤ $5,000 | No | First Superior → Non Grant Fund Approvers L1 |
-| CCH-3 | Travel/Non-Travel | > $5,000 | Yes | First Superior → Approvers >5k → Grant Fund Approvers L1 |
-| CCH-4 | Travel/Non-Travel | > $5,000 | No | First Superior → Approvers >5k → Non Grant Fund Approvers L1 |
-| CCH-5 | Non-Nursing Tuition | Not Karen/Melissa | Non Nursing Tuition Approvers → L2 |
-| CCH-6 | Nursing Tuition | Any | Nursing Tuition Self Approval |
+| OU2-1 | Travel/Non-Travel | ≤ $5,000 | Yes | First Superior → Grant Fund Approvers L1 |
+| OU2-2 | Travel/Non-Travel | ≤ $5,000 | No | First Superior → Non Grant Fund Approvers L1 |
+| OU2-3 | Travel/Non-Travel | > $5,000 | Yes | First Superior → Approvers >5k → Grant Fund Approvers L1 |
+| OU2-4 | Travel/Non-Travel | > $5,000 | No | First Superior → Approvers >5k → Non Grant Fund Approvers L1 |
+| OU2-5 | Non-Nursing Tuition | Not Karen/Special Approver2 | Non Nursing Tuition Approvers → L2 |
+| OU2-6 | Nursing Tuition | Any | Nursing Tuition Self Approval |
 
-### 7.3 CCF Rules (OU 121)
+### 7.3 OU3 Rules (OU 121)
 
 | Rule | Condition | Approval Chain |
 |------|-----------|----------------|
-| CCF-1 | Amount < $2,000, Not Damon | CCF Dept Approver |
-| CCF-2 | Amount ≥ $2,000, Not Damon | CCF Dept Approver → Damon Howell |
-| CCF-3 | Submitter is Damon | CCF Dept Approver (Damon skipped) |
-| CCF-4 | No dept approver | SYSADMIN (automatic) |
+| OU3-1 | Amount < $2,000, Not Damon | OU3 Dept Approver |
+| OU3-2 | Amount ≥ $2,000, Not Damon | OU3 Dept Approver → Special Approver |
+| OU3-3 | Submitter is Damon | OU3 Dept Approver (Damon skipped) |
+| OU3-4 | No dept approver | SYSADMIN (automatic) |
 
 ---
 
@@ -438,9 +438,9 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 ## 13. ACCEPTANCE CRITERIA
 
 ### 13.1 Functional Acceptance
-- [ ] All CCP rules (CCP-1 through CCP-5) implemented and tested
-- [ ] All CCH rules (CCH-1 through CCH-6) implemented and tested
-- [ ] All CCF rules (CCF-1 through CCF-4) implemented and tested
+- [ ] All OU1 rules (OU1-1 through OU1-5) implemented and tested
+- [ ] All OU2 rules (OU2-1 through OU2-6) implemented and tested
+- [ ] All OU3 rules (OU3-1 through OU3-4) implemented and tested
 - [ ] Grant fund differentiation working correctly
 - [ ] Special submitter handling verified
 - [ ] Amount thresholds evaluated accurately
@@ -481,7 +481,7 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 |------|------------|
 | AME | Approval Management Engine - Oracle's approval workflow system |
 | OU | Operating Unit - Organizational division in Oracle EBS |
-| DBMS | Database Management System - Specific approval group in CCP |
+| DBMS | Database Management System - Specific approval group in OU1 |
 | Grant Fund | Research or project-specific funding (codes 42000, 41235) |
 | First Superior | Employee's direct manager in organizational hierarchy |
 | SYSADMIN | System administrator - fallback approver when no dept approver exists |

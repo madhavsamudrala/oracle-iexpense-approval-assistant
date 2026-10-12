@@ -282,8 +282,8 @@ function populateTemplates(operatingUnit) {
  * @param {string} template - Selected template
  */
 function updateConditionalFields(operatingUnit, template) {
-  // Grant Fund field (CCH only, for travel/non-travel)
-  if (operatingUnit === 'CCH' && template && 
+  // Grant Fund field (OU2 only, for travel/non-travel)
+  if (operatingUnit === 'OU2' && template && 
       window.RulesEngine.requiresGrantFundInfo(operatingUnit, template)) {
     elements.grantFundGroup.style.display = 'block';
   } else {
@@ -292,11 +292,11 @@ function updateConditionalFields(operatingUnit, template) {
     Array.from(elements.grantFundRadios).forEach(radio => radio.checked = false);
   }
   
-  // Submitter Name field (show for tuition templates and CCF)
+  // Submitter Name field (show for tuition templates and OU3)
   const showSubmitterField = 
-    (operatingUnit === 'CCP' && template && template.includes('Tuition')) ||
-    (operatingUnit === 'CCH' && template && template.includes('Tuition')) ||
-    (operatingUnit === 'CCF');
+    (operatingUnit === 'OU1' && template && template.includes('Tuition')) ||
+    (operatingUnit === 'OU2' && template && template.includes('Tuition')) ||
+    (operatingUnit === 'OU3');
   
   if (showSubmitterField) {
     elements.submitterGroup.style.display = 'block';

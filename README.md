@@ -12,11 +12,11 @@ This directory contains all the schema components needed to build your knowledge
 
 **Contains:**
 - ✅ **8 Node Types:**
-  - OperatingUnit (CCP, CCH, CCF)
+  - OperatingUnit (OU1, OU2, OU3)
   - ExpenseTemplate (all expense types)
   - ExpenseAmount (monetary values)
   - GrantFund (grant funding indicator)
-  - SpecialSubmitter (Karen, Melissa, Damon)
+  - SpecialSubmitter (Karen, Special Approver2, Damon)
   - ApproverGroup (all approver groups)
   - ApprovalRule (business rules)
   - ApprovalChain (approval sequences)
@@ -33,9 +33,9 @@ This directory contains all the schema components needed to build your knowledge
 **Purpose:** Define all 15 approval rules with conditions and actions
 
 **Contains:**
-- ✅ **CCP Rules (5):** CCP-1 through CCP-5
-- ✅ **CCH Rules (6):** CCH-1 through CCH-6
-- ✅ **CCF Rules (4):** CCF-1 through CCF-4
+- ✅ **OU1 Rules (5):** OU1-1 through OU1-5
+- ✅ **OU2 Rules (6):** OU2-1 through OU2-6
+- ✅ **OU3 Rules (4):** OU3-1 through OU3-4
 
 **Each rule includes:**
 - Rule ID and name
@@ -165,7 +165,7 @@ If you prefer to build the schema step-by-step:
    Property: id
    Type: String
    Required: Yes
-   Enum: [CCP, CCH, CCF]
+   Enum: [OU1, OU2, OU3]
    
    Property: name
    Type: String
@@ -178,7 +178,7 @@ If you prefer to build the schema step-by-step:
 4. Add example:
    ```json
    {
-     "id": "CCP",
+     "id": "OU1",
      "name": "Primary Operating Unit",
      "ou_id": 101,
      "mileage_threshold": 1000,
@@ -193,14 +193,14 @@ If you prefer to build the schema step-by-step:
 
 ### Adding Rules
 
-#### Add Rule: CCP-4 (Example)
+#### Add Rule: OU1-4 (Example)
 
 1. Click **"Add Rule"**
 2. Fill in details:
    ```
-   Rule ID: CCP-4
+   Rule ID: OU1-4
    Rule Name: Mileage Low Amount
-   Operating Unit: CCP
+   Operating Unit: OU1
    Priority: 4
    ```
 3. Define conditions:
@@ -208,7 +208,7 @@ If you prefer to build the schema step-by-step:
    Condition 1:
    - Field: template
    - Operator: equals
-   - Value: "CCP Local Mileage Expense"
+   - Value: "OU1 Local Mileage Expense"
    
    Condition 2:
    - Field: amount
@@ -219,7 +219,7 @@ If you prefer to build the schema step-by-step:
    ```
    Action: Generate Approval Chain
    Approvers:
-     1. CCP Department Approver
+     1. OU1 Department Approver
    ```
 5. Click **"Save Rule"**
 
@@ -246,8 +246,8 @@ If you prefer to build the schema step-by-step:
    ```
 4. Add example:
    ```
-   Source: {id: "CCP"}
-   Target: {template_id: "CCP_MILEAGE"}
+   Source: {id: "OU1"}
+   Target: {template_id: "OU1_MILEAGE"}
    ```
 5. Click **"Save Relationship"**
 
@@ -267,7 +267,7 @@ After building your schema, verify:
 - [ ] Descriptions clear
 
 ### Rules
-- [ ] All 15 rules created (5 CCP, 6 CCH, 4 CCF)
+- [ ] All 15 rules created (5 OU1, 6 OU2, 4 OU3)
 - [ ] Conditions properly defined
 - [ ] Actions specify approval chains
 - [ ] Priorities set correctly
@@ -292,26 +292,26 @@ After building your schema, verify:
 
 ### Test Scenario 1: Simple Query
 ```
-Input: CCP Local Mileage, $800
-Expected Rule: CCP-4
-Expected Output: CCP Department Approver
+Input: OU1 Local Mileage, $800
+Expected Rule: OU1-4
+Expected Output: OU1 Department Approver
 ```
 
 ### Test Scenario 2: Complex Query
 ```
-Input: CCH Travel, $6,000, Grant Fund
-Expected Rule: CCH-3
+Input: OU2 Travel, $6,000, Grant Fund
+Expected Rule: OU2-3
 Expected Output: 
   1. First Superior
-  2. CCH Approvers Greater Than 5k dollars
-  3. CCH Grant Fund Approvers Level 1
+  2. OU2 Approvers Greater Than 5k dollars
+  3. OU2 Grant Fund Approvers Level 1
 ```
 
 ### Test Scenario 3: Special Submitter
 ```
-Input: CCF Standard, $3,000, Submitter: Damon Howell
-Expected Rule: CCF-3
-Expected Output: CCF Department Approver (Damon skipped)
+Input: OU3 Standard, $3,000, Submitter: Special Approver
+Expected Rule: OU3-3
+Expected Output: OU3 Department Approver (Damon skipped)
 ```
 
 ---

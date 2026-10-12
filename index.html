@@ -38,7 +38,7 @@
                 </div>
                 <div class="card-body">
                     <ol class="instructions-list">
-                        <li>Select your <strong>Operating Unit</strong> (CCP, CCH, or CCF)</li>
+                        <li>Select your <strong>Operating Unit</strong> (OU1, OU2, or OU3)</li>
                         <li>Choose your <strong>Expense Template</strong> from the dropdown</li>
                         <li>Enter the <strong>Total Amount</strong> of your expense</li>
                         <li>Provide additional information if prompted (grant fund status, submitter name)</li>
@@ -64,7 +64,7 @@
                         <div class="form-group">
                             <label for="operatingUnit" class="form-label required">
                                 Operating Unit
-                                <span class="tooltip" data-tooltip="Select your organizational unit: CCP (101), CCH (102), or CCF (121)">
+                                <span class="tooltip" data-tooltip="Select your organizational unit: OU1 (101), OU2 (102), or OU3 (121)">
                                     <svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
@@ -72,9 +72,9 @@
                             </label>
                             <select id="operatingUnit" name="operatingUnit" class="form-control" required aria-required="true">
                                 <option value="">-- Select Operating Unit --</option>
-                                <option value="CCP">CCP (OU 101)</option>
-                                <option value="CCH">CCH (OU 102)</option>
-                                <option value="CCF">CCF (OU 121)</option>
+                                <option value="OU1">OU1 (OU 101)</option>
+                                <option value="OU2">OU2 (OU 102)</option>
+                                <option value="OU3">OU3 (OU 121)</option>
                             </select>
                             <span class="error-message" id="error-operatingUnit"></span>
                         </div>
@@ -113,7 +113,7 @@
                             <span class="error-message" id="error-amount"></span>
                         </div>
 
-                        <!-- Grant Fund (CCH Only) -->
+                        <!-- Grant Fund (OU2 Only) -->
                         <div class="form-group" id="grantFundGroup" style="display: none;">
                             <label class="form-label required">
                                 Grant Fund Status
@@ -140,7 +140,7 @@
                         <div class="form-group" id="submitterGroup" style="display: none;">
                             <label for="submitterName" class="form-label">
                                 Submitter Name (Optional)
-                                <span class="tooltip" data-tooltip="Enter your name if you are a special submitter (Karen Martino, Melissa, or Damon Howell)">
+                                <span class="tooltip" data-tooltip="Enter your name if you are a special submitter (Special Approver1, Special Approver2, or Special Approver)">
                                     <svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
@@ -229,7 +229,7 @@
                             <p>No, this tool only provides approval chain information. You must submit your expense through Oracle iExpense.</p>
                         </div>
                         <div class="faq-item">
-                            <strong>Q: What are grant funds (CCH)?</strong>
+                            <strong>Q: What are grant funds (OU2)?</strong>
                             <p>Grant funds are research or project-specific funding with codes 42000 or 41235. Check with your department if unsure.</p>
                         </div>
                         <div class="faq-item">

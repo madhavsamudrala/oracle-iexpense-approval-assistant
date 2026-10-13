@@ -143,7 +143,7 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 
 **Postconditions:** Special routing rules applied correctly  
 **Success Criteria:** 
-- Karen/Special Approver2: Different tuition routing
+- Special Approver1/Special Approver2: Different tuition routing
 - Special Approver: Skipped in OU3 approval chain
 
 ---
@@ -274,7 +274,7 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 | FR-001 | Support all three Operating Units (OU1, OU2, OU3) | Must Have | All OU rules implemented correctly |
 | FR-002 | Evaluate amount thresholds accurately | Must Have | Correct approval chain for all threshold scenarios |
 | FR-003 | Differentiate grant vs. non-grant funds (OU2) | Must Have | Proper routing based on fund codes 42000, 41235 |
-| FR-004 | Handle special submitters (Karen, Special Approver2, Damon) | Must Have | Modified routing applied correctly |
+| FR-004 | Handle special submitters (Special Approver1, Special Approver2, Special Approver) | Must Have | Modified routing applied correctly |
 | FR-005 | Display approval chains in order | Must Have | Sequential approver list with clear numbering |
 | FR-006 | Provide missing information prompts | Must Have | Clear, actionable prompts for incomplete data |
 | FR-007 | Handle SYSADMIN routing scenarios | Must Have | Automatic routing message when no dept approver |
@@ -319,7 +319,7 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 
 | Rule | Template | Condition | Approval Chain |
 |------|----------|-----------|----------------|
-| OU1-1 | Tuition Expenses | Not Karen/Special Approver2 | Non Nursing Tuition Approvers → L2 |
+| OU1-1 | Tuition Expenses | Not Special Approver1/Special Approver2 | Non Nursing Tuition Approvers → L2 |
 | OU1-2 | Non-Travel / Travel-Other | Amount > $0 | Dept Approver → DBMS Approvers |
 | OU1-3 | Local Mileage | Amount ≥ $1,000 | Dept Approver → DBMS Approvers |
 | OU1-4 | Local Mileage | Amount < $1,000 | Dept Approver |
@@ -333,16 +333,16 @@ The assistant replicates AME approval logic using client-side JavaScript, ensuri
 | OU2-2 | Travel/Non-Travel | ≤ $5,000 | No | First Superior → Non Grant Fund Approvers L1 |
 | OU2-3 | Travel/Non-Travel | > $5,000 | Yes | First Superior → Approvers >5k → Grant Fund Approvers L1 |
 | OU2-4 | Travel/Non-Travel | > $5,000 | No | First Superior → Approvers >5k → Non Grant Fund Approvers L1 |
-| OU2-5 | Non-Nursing Tuition | Not Karen/Special Approver2 | Non Nursing Tuition Approvers → L2 |
+| OU2-5 | Non-Nursing Tuition | Not Special Approver1/Special Approver2 | Non Nursing Tuition Approvers → L2 |
 | OU2-6 | Nursing Tuition | Any | Nursing Tuition Self Approval |
 
 ### 7.3 OU3 Rules (OU 121)
 
 | Rule | Condition | Approval Chain |
 |------|-----------|----------------|
-| OU3-1 | Amount < $2,000, Not Damon | OU3 Dept Approver |
-| OU3-2 | Amount ≥ $2,000, Not Damon | OU3 Dept Approver → Special Approver |
-| OU3-3 | Submitter is Damon | OU3 Dept Approver (Damon skipped) |
+| OU3-1 | Amount < $2,000, Not Special Approver | OU3 Dept Approver |
+| OU3-2 | Amount ≥ $2,000, Not Special Approver | OU3 Dept Approver → Special Approver |
+| OU3-3 | Submitter is Special Approver | OU3 Dept Approver (Special Approver skipped) |
 | OU3-4 | No dept approver | SYSADMIN (automatic) |
 
 ---

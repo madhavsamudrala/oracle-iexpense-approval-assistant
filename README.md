@@ -16,7 +16,7 @@ This directory contains all the schema components needed to build your knowledge
   - ExpenseTemplate (all expense types)
   - ExpenseAmount (monetary values)
   - GrantFund (grant funding indicator)
-  - SpecialSubmitter (Karen, Special Approver2, Damon)
+  - SpecialSubmitter (Special Approver1, Special Approver2, Special Approver)
   - ApproverGroup (all approver groups)
   - ApprovalRule (business rules)
   - ApprovalChain (approval sequences)
@@ -311,7 +311,7 @@ Expected Output:
 ```
 Input: OU3 Standard, $3,000, Submitter: Special Approver
 Expected Rule: OU3-3
-Expected Output: OU3 Department Approver (Damon skipped)
+Expected Output: OU3 Department Approver (Special Approver skipped)
 ```
 
 ---

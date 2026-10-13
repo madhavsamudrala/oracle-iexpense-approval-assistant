@@ -236,19 +236,19 @@ const APPROVER_GROUPS = {
 const SPECIAL_SUBMITTERS = {
   SPECIAL_APPROVER1: {
     name: 'Special Approver1',
-    aliases: ['karen', 'martino', 'karen martino'],
+    aliases: ['Special Approver1', 'Special Approver1', 'Special Approver1'],
     affectedOUs: ['OU1', 'OU2'],
     affectedTemplates: ['tuition']
   },
-  MELISSA: {
+  SPECIAL_APPROVER2: {
     name: 'Special Approver2',
-    aliases: ['melissa'],
+    aliases: ['Special Approver2'],
     affectedOUs: ['OU1', 'OU2'],
     affectedTemplates: ['tuition']
   },
   SPECIAL_APPROVER: {
     name: 'Special Approver',
-    aliases: ['damon', 'howell', 'damon howell'],
+    aliases: ['Special Approver', 'Special Approver', 'Special Approver'],
     affectedOUs: ['OU3'],
     affectedTemplates: ['all']
   }
@@ -377,7 +377,7 @@ function evaluateOU1Rules(input) {
   
   // Rule OU1-1: Tuition Expenses
   if (template === 'OU1 Tuition Expenses') {
-    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'MELISSA'])) {
+    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'SPECIAL_APPROVER2'])) {
       return [
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L1,
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L2
@@ -425,7 +425,7 @@ function evaluateOU2Rules(input) {
   
   // Rule OU2-5: Non-Nursing Tuition
   if (template === 'OU2 Non-Nursing Tuition') {
-    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'MELISSA'])) {
+    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'SPECIAL_APPROVER2'])) {
       return [
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L1,
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L2
@@ -471,11 +471,11 @@ function evaluateOU2Rules(input) {
 function evaluateOU3Rules(input) {
   const { amount, submitterName } = input;
   
-  // Rule OU3-3: Damon's Own Submissions
+  // Rule OU3-3: Special Approver's Own Submissions
   if (isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER'])) {
     return [
       APPROVER_GROUPS.OU3_DEPT_APPROVER
-      // Damon is skipped
+      // Special Approver is skipped
     ];
   }
   
@@ -992,8 +992,8 @@ function sanitizeString(str) {
 ```
 main branch (production)
   │
-  ├── feature/new-rule-ccp-6
-  ├── feature/update-cch-thresholds
+  ├── feature/new-rule-ou1-6
+  ├── feature/update-ou2-thresholds
   ├── bugfix/grant-fund-validation
   └── docs/update-specifications
 ```

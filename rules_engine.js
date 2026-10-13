@@ -85,19 +85,19 @@ const APPROVER_GROUPS = {
 const SPECIAL_SUBMITTERS = {
   SPECIAL_APPROVER1: {
     name: 'Special Approver1',
-    aliases: ['karen', 'martino', 'karen martino', 'k martino', 'k. martino'],
+    aliases: ['special approver1'],
     affectedOUs: ['OU1', 'OU2'],
     affectedTemplates: ['tuition']
   },
-  MELISSA: {
+  SPECIAL_APPROVER2: {
     name: 'Special Approver2',
-    aliases: ['melissa'],
+    aliases: ['special approver2'],
     affectedOUs: ['OU1', 'OU2'],
     affectedTemplates: ['tuition']
   },
   SPECIAL_APPROVER: {
     name: 'Special Approver',
-    aliases: ['damon', 'howell', 'damon howell', 'd howell', 'd. howell'],
+    aliases: ['special approver'],
     affectedOUs: ['OU3'],
     affectedTemplates: ['all']
   }
@@ -124,7 +124,7 @@ const ERROR_MESSAGES = {
 /**
  * Check if a submitter is a special submitter
  * @param {string} submitterName - Name of the submitter
- * @param {Array<string>} specialSubmitterKeys - Keys to check (e.g., ['SPECIAL_APPROVER1', 'MELISSA'])
+ * @param {Array<string>} specialSubmitterKeys - Keys to check (e.g., ['SPECIAL_APPROVER1', 'SPECIAL_APPROVER2'])
  * @returns {boolean} True if submitter matches any of the special submitters
  */
 function isSpecialSubmitter(submitterName, specialSubmitterKeys) {
@@ -300,13 +300,13 @@ function evaluateOU1Rules(input) {
   // Rule OU1-1: Tuition Expenses
   if (normalizedTemplate === 'OU1 Tuition Expenses') {
     // Check if submitter is Special Approver1 or Special Approver2 (they have different routing)
-    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'MELISSA'])) {
+    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'SPECIAL_APPROVER2'])) {
       return [
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L1,
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L2
       ];
     }
-    // If Karen or Special Approver2, different routing applies (not defined in rules, return null)
+    // If Special Approver1 or Special Approver2, different routing applies (not defined in rules, return null)
     return null;
   }
   
@@ -359,13 +359,13 @@ function evaluateOU2Rules(input) {
   // Rule OU2-5: Non-Nursing Tuition
   if (normalizedTemplate === 'OU2 Non-Nursing Tuition') {
     // Check if submitter is Special Approver1 or Special Approver2 (they have different routing)
-    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'MELISSA'])) {
+    if (!isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER1', 'SPECIAL_APPROVER2'])) {
       return [
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L1,
         APPROVER_GROUPS.OU1_OU2_NON_NURSING_TUITION_L2
       ];
     }
-    // If Karen or Special Approver2, different routing applies (not defined in rules, return null)
+    // If Special Approver1 or Special Approver2, different routing applies (not defined in rules, return null)
     return null;
   }
   
@@ -415,11 +415,11 @@ function evaluateOU2Rules(input) {
 function evaluateOU3Rules(input) {
   const { amount, submitterName } = input;
   
-  // Rule OU3-3: Damon's Own Submissions
+  // Rule OU3-3: Special Approver's Own Submissions
   if (isSpecialSubmitter(submitterName, ['SPECIAL_APPROVER'])) {
     return [
       APPROVER_GROUPS.OU3_DEPT_APPROVER
-      // Damon is skipped in his own submissions
+      // Special Approver is skipped in his own submissions
     ];
   }
   

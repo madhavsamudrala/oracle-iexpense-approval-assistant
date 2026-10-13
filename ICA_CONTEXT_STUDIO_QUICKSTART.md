@@ -633,7 +633,7 @@ Bring your content into the context. Connect data sources, ingest and process co
          "approval_chain": [
            "OU3 Department Approver"
          ],
-         "note": "Damon is skipped in his own submissions"
+         "note": "Special Approver is skipped in his own submissions"
        },
        {
          "id": "OU3-4",

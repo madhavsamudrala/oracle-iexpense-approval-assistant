@@ -620,8 +620,8 @@ class ExpenseApprovalMCPServer extends MCPServer {
       ],
       OU3: [
         { rule: 'OU3-1', description: 'Amount < $2k dept only' },
-        { rule: 'OU3-2', description: 'Amount >= $2k with Damon' },
-        { rule: 'OU3-3', description: 'Damon submitter skip' },
+        { rule: 'OU3-2', description: 'Amount >= $2k with Special Approver' },
+        { rule: 'OU3-3', description: 'Special Approver submitter skip' },
         { rule: 'OU3-4', description: 'SYSADMIN fallback' }
       ]
     };
@@ -1083,7 +1083,7 @@ Bot: Here are the OU3 (Foundation) approval rules:
      
      • Expenses under $2,000: OU3 Department Approver only
      • Expenses $2,000 or more: OU3 Department Approver, then Special Approver
-     • If Special Approver submits: OU3 Department Approver only (Damon is skipped)
+     • If Special Approver submits: OU3 Department Approver only (Special Approver is skipped)
      • No department approver: Automatically routes to SYSADMIN
      
      Would you like to check a specific expense amount?

@@ -682,7 +682,7 @@ Each test case includes:
 
 ---
 
-### TC-OU3-006: Damon's Submission - Below Threshold
+### TC-OU3-006: Special Approver's Submission - Below Threshold
 **Rule Reference:** OU3-3  
 **Priority:** Critical  
 **Status:** ⏳ Pending
@@ -697,11 +697,11 @@ Each test case includes:
 
 **Expected Result:**
 1. OU3 Department Approver
-(Damon is skipped)
+(Special Approver is skipped)
 
 ---
 
-### TC-OU3-007: Damon's Submission - Above Threshold
+### TC-OU3-007: Special Approver's Submission - Above Threshold
 **Rule Reference:** OU3-3  
 **Priority:** Critical  
 **Status:** ⏳ Pending
@@ -716,7 +716,7 @@ Each test case includes:
 
 **Expected Result:**
 1. OU3 Department Approver
-(Damon is skipped even though amount ≥ $2,000)
+(Special Approver is skipped even though amount ≥ $2,000)
 
 ---
 
@@ -819,29 +819,29 @@ Each test case includes:
 - Operating Unit: OU3
 - Template: OU3 Standard Expense
 - Amount: $2,500
-- Submitter: DAMON HOWELL
+- Submitter: Special Approver
 
 **Expected Result:**
 1. OU3 Department Approver
-(Damon should be recognized regardless of case)
+(Special Approver should be recognized regardless of case)
 
 ---
 
-### TC-EDGE-005: Partial Name Matching - Damon
+### TC-EDGE-005: Partial Name Matching - Special Approver
 **Priority:** High  
 **Status:** ⏳ Pending
 
-**Description:** Verify partial name matching for Damon
+**Description:** Verify partial name matching for Special Approver
 
 **Test Data:**
 - Operating Unit: OU3
 - Template: OU3 Standard Expense
 - Amount: $2,500
-- Submitter: Damon
+- Submitter: Special Approver
 
 **Expected Result:**
 1. OU3 Department Approver
-(Should recognize "Damon" as Special Approver)
+(Should recognize "Special Approver" as Special Approver)
 
 ---
 
